@@ -1,0 +1,101 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">查询条件</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+
+                            <input type="text" class="form-control" id="text1" placeholder="请输入用户名称" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn  btn-success" type="button" onclick="Search()">查    询</button>
+                @*<button class="btn  btn-default" type="button" onclick="Add()">添    加</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- START SIMPLE DATATABLE -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">用户购物车</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable_simple" id="assets-data-table">
+                    <thead>
+                        <tr>
+                            
+                            <th>用户名</th>
+                            <th>收货人</th>
+                            <th>收货手机号</th>
+                            <th>收货地址</th>
+                            <th>默认收货地址</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                        @foreach (var asset in ViewBag.data)
+                        {
+                        <tr>
+                            <td>@asset.UserName</td>
+                            <td>@asset.Consignee</td>
+                            <td>@asset.Ctel</td>
+                            <td>@asset.Address</td>
+                            @if (asset.Default == true)
+                            {
+                                <td class="btn-danger">@asset.Default</td>
+                            }
+                            else
+                            {
+                                <td>@asset.Default</td>
+                            }
+
+                            <td>@asset.CreatTime</td>
+                            @if (asset.IsValid == true)
+                            {
+                                <td>正常</td>
+                            }
+                            else
+                            {
+                                <td>已被用户删除</td>
+                            }
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- END SIMPLE DATATABLE -->
+    </div>
+</div>
+<script>
+     function Search()//查询
+    {
+        var content = $("#text1").val();
+        window.location = '@Url.Action("Adress", "Shop")' + '?Content=' + content +'&s=1';
+    }
+</script>

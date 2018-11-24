@@ -1,0 +1,105 @@
+﻿@charset "utf-8";
+/* CSS Document */
+b{ font-weight: normal;}
+input:focus{ outline: none;}
+select:focus{ outline: none;}
+textarea:focus{ outline: none;}
+i,em{font-style: normal;}
+
+
+/**个人中心订单**/
+.centerorder{ padding-bottom: 20px;}
+.orderkind{ overflow: hidden; padding:0 12px; background-color: #fff; border-top: 5px solid #f0f1f5; border-bottom: 5px solid #f0f1f5; position: fixed; width: 100%; left: 0; top: 46px; z-index: 10; }
+.orderkind a{ display: block; width: 20%; float:left; text-align: center; color: #000; cursor: pointer;}
+.orderkind a span{ display: inline-block; padding: 8px 0; border-bottom: 2px solid #fff; font-size: 15px; line-height: 30px;}
+.orderkind a.on span{ border-bottom: 2px solid #000;}
+.centerorder .list{}
+.centerorder .list .sg{ margin-bottom: 6px; border-top: 1px solid #e5e5e5; background-color: #fff;}
+.centerorder .list .sg .num{ display: block; border-bottom: 1px solid #e5e5e5; padding: 5px 112px 5px 10px;position: relative; overflow: hidden;}
+.centerorder .list .sg .num span{ display: block; padding-left:20px; background-image: url("../images/centerorder_07.png"); background-size: 15px auto; background-repeat: no-repeat; background-position: left center; line-height: 30px; font-size: 15px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.centerorder .list .sg .num i{ position:absolute; right: 10px; top: 50%; height: 30px; line-height: 30px; text-align: right; font-size: 14px; color:#f72a3b; margin-top: -15px; width:100px;}
+.centerorder .list .sg .thing{ padding: 8px 12px 8px 110px; border-bottom: 1px solid #e5e5e5; min-height: 102px;  position: relative;}
+.centerorder .list .sg .thing .imga{ display: block; width:90px; height:90px; position: absolute; left: 12px; top: 50%; margin-top: -45px; border-radius: 5px; overflow: hidden; cursor:pointer;}
+.centerorder .list .sg .thing .imga img{ display: block; width: 100px; height: 100px;}
+.centerorder .list .sg .thing .text{ font-size: 14px; color: #000;}
+.centerorder .list .sg .thing .text .name{ display: block; padding-right: 70px; position: relative; color: #000;}
+.centerorder .list .sg .thing .text .name span{ display: block;}
+.centerorder .list .sg .thing .text .name span i{ display: block; line-height: 18px; height: 40px; padding: 2px 0; overflow: hidden; }
+.centerorder .list .sg .thing .text .name span em{ display:block; line-height: 18px; margin: 2px 0 4px 0; font-size: 13px; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.centerorder .list .sg .thing .text .name span.price{ position: absolute; right: 0px; top: 0; width:65px; text-align: right; font-family: "Arial";}
+.centerorder .list .sg .thing .text .name span.price i{ line-height: 20px; height: 20px;}
+.centerorder .list .sg .thing .text .discuss{ display: block; width: 50px; height: 24px; line-height: 24px; color: #fff; background-color: #000; text-align: center; border-radius: 3px; cursor: pointer; text-align: center; font-size: 12px; margin-top: 2px;}
+.centerorder .list .sg .sum{ padding: 6px 12px; border-bottom: 1px solid #e5e5e5; text-align: right; font-size: 14px; color: #111; line-height: 30px;}
+.centerorder .list .sg .sum i{ color: #f72a3b; font-family: "Arial";}
+.centerorder .list .sg .sum b{ color: #f72a3b; font-size: 18px; font-family: "Arial";}
+.centerorder .list .sg .caozuo{ padding: 6px 12px; border-bottom: 1px solid #e5e5e5; overflow: hidden; }
+.centerorder .list .sg .caozuo a{ display: block; min-width: 80px; text-align: center; float: right; margin-left: 10px; font-size: 13px; line-height: 30px; color: #000; border-radius: 4px; padding: 0 8px; border: 1px solid #000; cursor: pointer; }
+.centerorder .list .sg .caozuo a.bg{ background-color: #000; color: #fff;}
+.centerorder .list .sg .caozuo a.surea{ background-color: #000; color: #fff;}
+.centerorder .list .sg .caozuo a.paya{ background-color: #000; color: #fff;}
+.centerorder .list .sg .mation{ padding: 8px 12px; border-bottom: 1px solid #e5e5e5;}
+.centerorder .list .sg .mation h4{ font-size: 15px; line-height: 21px; color: #f72a3b; margin-bottom: 5px;}
+.centerorder .list .sg .mation h5{ font-size: 13px; line-height: 20px; color: #666;}
+
+.centerorder .empty{ padding: 30px 15px;}
+.centerorder .empty img{ display: block; max-width: 100%; max-width: 160px; margin: 15px auto;}
+.centerorder .empty h2{ font-size: 16px; line-height: 30px; color: #000; text-align: center;}
+.centerorder .empty a{ display: block; width: 120px; line-height: 36px; border: 1px solid #000; border-radius: 5px; margin: 15px auto; text-align: center; font-size: 15px; text-align: center; color: #000;}
+    /**个人中心订单**/
+
+
+@media(max-width:420px ){
+    .orderkind a span{ font-size: 14px;}
+    .centerorder .list .sg .num span{ font-size: 14px;background-size: 13px auto; padding-left: 17px;}
+    .centerorder .list .sg .num i{ font-size: 13px;}
+    .centerorder .list .sg .thing .text{ font-size: 13px;}
+}
+
+/**订单详情**/
+.orderdetail{ padding-bottom: 30px;}
+.orderdetail .state{ padding: 15px 15px; text-align: center; font-size: 14px; line-height: 24px; color: #111;}
+.orderdetail .state img{ display: block; margin: 0 auto; width:32px; margin: 5px auto 0 auto;}
+.orderdetail .dizhi{ background-color: #fff; padding: 15px 12px 15px 44px; background-position: 12px center; background-repeat: no-repeat; background-size: 24px auto; background-image: url("../images/dengfukuan_07.png"); border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5;}
+.orderdetail .dizhi p{ font-size: 15px; line-height: 30px; color: #000; overflow: hidden;}
+.orderdetail .dizhi p span{ display: block; float: left;}
+.orderdetail .dizhi p i{ display: block; float: right; font-size: 13px;}
+.orderdetail .dizhi h6{ font-size: 13px; line-height: 23px; color: #666;}
+.orderdetail .qingdan{ background-color: #fff; margin: 8px 0 0 0; border-top: 1px solid #e5e5e5;}
+.orderdetail .qingdan .num{ display: block; border-bottom: 1px solid #e5e5e5; padding: 5px 100px 5px 12px;position: relative; overflow: hidden;}
+.orderdetail .qingdan .num span{ display: block; padding-left:20px; background-image: url("../images/dengfukuan_11.png"); background-size: 15px auto; background-repeat: no-repeat; background-position: left center; line-height: 30px; font-size: 15px; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.orderdetail .qingdan .num i{ position:absolute; right: 12px; top: 50%; height: 30px; line-height: 30px; text-align: right; font-size: 14px; color:#f72a3b; margin-top: -15px; width: 84px;}
+.orderdetail .qingdan .sg{ padding: 8px 12px 8px 110px; border-bottom: 1px solid #e5e5e5; min-height: 102px;  position: relative;}
+.orderdetail .qingdan .sg .imga{ display: block; width:90px; height:90px; position: absolute; left: 12px; top: 50%; margin-top: -45px; border-radius: 5px; overflow: hidden; cursor:pointer;}
+.orderdetail .qingdan .sg .imga img{ display: block; width: 100px; height: 100px;}
+.orderdetail .qingdan .sg .text{ font-size: 14px; color: #000;}
+.orderdetail .qingdan .sg .text .name{ display: block; padding-right: 70px; position: relative; color: #000;}
+.orderdetail .qingdan .sg .text .name span{ display: block;}
+.orderdetail .qingdan .sg .text .name span i{ display: block; line-height: 18px; height: 40px; padding: 2px 0; overflow: hidden; }
+.orderdetail .qingdan .sg .text .name span em{ display:block; line-height: 18px; margin: 2px 0 4px 0; font-size: 13px; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.orderdetail .qingdan .sg .text .name span.price{ position: absolute; right: 0px; top: 0; width:65px; text-align: right; font-family: "Arial";}
+.orderdetail .qingdan .sg .text .name span.price i{ line-height: 20px; height: 20px;}
+.orderdetail .qingdan .sg .text .discuss{ display: block; width: 50px; height: 24px; line-height: 24px; color: #fff; background-color: #000; text-align: center; border-radius: 3px; cursor: pointer; text-align: center; font-size: 12px; margin-top: 2px;}
+.orderdetail .qingdan .sum{ padding: 6px 12px; border-bottom: 1px solid #e5e5e5; text-align: right; font-size: 14px; color: #111; line-height: 30px;}
+.orderdetail .qingdan .sum i{ color: #f72a3b; font-family: "Arial";}
+.orderdetail .qingdan .sum b{ color: #f72a3b; font-size: 18px; font-family: "Arial";}
+.orderdetail .caozuo{ padding: 8px 12px; border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; margin-top: 8px; overflow: hidden; background-color: #fff; }
+.orderdetail .caozuo a{ display: block; width: 80px; text-align: center; float: right; margin-left: 10px; font-size: 13px; line-height: 30px; color: #000; border-radius: 4px; padding: 0 8px; border: 1px solid #000; cursor: pointer; }
+.orderdetail .caozuo a.surea{ background-color: #000; color: #fff;}
+.orderdetail .caozuo a.paya{ background-color: #000; color: #fff;}
+.orderdetail .tail{}
+.orderdetail .tail h3{ padding: 8px 12px; font-size: 16px; color: #555; line-height: 29px;}
+.orderdetail .tail dl{ background-color: #fff; padding: 10px 15px 10px 100px; border-bottom: 1px solid #e5e5e5; font-size: 14px; line-height: 25px; color: #555; position: relative; }
+.orderdetail .tail dl dt{ position: absolute; left: 12px; top: 10px; color: #111;}
+.orderdetail .tail dl dd{ text-align: right; font-size: 13px;}
+.orderdetail .tail dl dd i{ color: #f72a3b;}
+/**订单详情**/
+
+@media(max-width:420px ){
+    .orderdetail .dizhi p{ font-size: 14px;}
+    .orderdetail .dizhi p i{ font-size: 12px;}
+    .orderdetail .dizhi h6{ font-size: 12px; line-height: 18px;}
+}
+
+
+
+

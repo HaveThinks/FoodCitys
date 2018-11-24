@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>美食商城</title>
+    <meta name="description" content="美食商城" />
+    <meta name="keywords" content="美食商城" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="Content/css/amazeui.min.css" />
+    <link rel="stylesheet" href="Content/css/style.css" />
+    <link href="Content/css/Cbase.css" type="text/css" rel="stylesheet">
+    <link href="Content/css/center.css" type="text/css" rel="stylesheet">
+    <script type="text/javascript" src="Content/js/jquery.min.js"></script>
+    <script type="text/javascript" src="Content/js/amazeui.min.js"></script>
+    <script src="Content/js/tools.js"></script>
+    <script src="Content/js/jquery-3.2.1.min.js"></script>
+
+    <style>
+        .order-style li {
+            float: left;
+            width: 25%;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        $(function () {
+            var price = 0;
+            $.ajax({
+                url: weburl + "api/Order/Order",
+                type: "get",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#content").append("<div class=\"c-comment\">" +
+                                     "<span class=\"c-comment-num\">订单编号：" + data[i].g[0].ExpressNumber + "</span>" +
+                                     "<span class=\"c-comment-suc\">" + data[i].g[0].OrderState + "</span>" +
+                                      "</div>");
+                        for (var j = 0; j < data[i].g.length; j++) {
+
+                            $("#content").append("<div class=\"c-comment-list\" style=\"border: 0;\">" +
+                                        "<a class=\"o-con\" href=\"\">" +
+                                        "<div class=\"o-con-img\"><img src=\"Content/images/" + data[i].g[j].image + "\"></div>" +
+                                        "<div class=\"o-con-txt\">" +
+                                        "<p>" + data[i].g[j].MenuName + "</p>" +
+                                        "<p class=\"price\">￥" + data[i].g[j].Price + "</p>" +
+                                        "<p>合计：<span>￥" + data[i].g[j].TotalMoney + "</span></p>" +
+                                        "</div>" +
+                                        "<div class=\"o-con-much\"> <h4>x" + data[i].g[j].Quantity + "</h4></div>" +
+                                        "</a>");
+                            price = parseInt(price) + parseInt(data[i].g[j].TotalMoney);
+                        }
+                        $("#content").append("<div class=\"c-com-money\"> 实付金额：<span>￥ " + price + "</span></div>" +
+                                             "</div>");
+                        price = 0;
+                        if (data[i].g[0].OrderState == "待付款") {
+                            $("#content").append("<div class=\"c-com-btn\">" +
+                                                  "<a href=\"tureorder.html?id=" + data[i].g[0].OrderID + "\">立即支付</a>" +
+                                                 "<a class=\"canclea\" onclick=\"canclea()\" id=\"" + data[i].g[0].OrderID + "\">取消订单</a>" +
+                                                  "</div>" +
+                                                  "<div class=\"clear\"></div>")
+                        }
+                        if (data[i].g[0].OrderState == "卖家已发货") {
+                            $("#content").append("<div class=\"c-com-btn\">" +
+                                                  "<a class=\"surea\" onclick=\"surea()\" id=\"" + data[i].g[0].OrderID + "\">确认收货</a>" +
+                                                  "</div>" +
+                                                  "<div class=\"clear\"></div>")
+                        }
+                        if (data[i].g[0].OrderState == "交易成功") {
+                            $("#content").append("<div class=\"c-com-btn\">" +
+                                                 "<a class=\"deletea\" onclick=\"de()\" id=\"" + data[i].g[0].OrderID + "\">删除订单</a>" +
+                                                 "<a class=\"\" onclick=\"\" id=\"" + data[i].Key.OrderID + "\">评价晒单</a>" +
+                                                 "</div>" +
+                                                 "<div class=\"clear\"></div>");
+                        }
+                        if (data[i].g[0].OrderState == "已收货") {
+                            $("#content").append("<div class=\"c-com-btn\">" +
+                                                     "<a class=\"deletea\" onclick=\"de()\" id=\"" + data[i].g[0].OrderID + "\">删除订单</a>" +
+                                                      "<a class=\"\" onclick=\"\" id=\"" + data[i].g[0].OrderID + "\">退换货</a>" +
+                                                     "</div>" +
+                                                     "<div class=\"clear\"></div>");
+                        }
+                        if (data[i].g[0].OrderState == "交易取消") {
+                            $("#content").append("<div class=\"c-com-btn\">" +
+                                                     "<a class=\"deletea\" onclick=\"de()\" id=\"" + data[i].g[0].OrderID + "\">删除订单</a>" +
+                                                     "</div>" +
+                                                     "<div class=\"clear\"></div>");
+                        }
+                    }
+                }
+            });
+
+            $("#dfk").click(function () {
+                $.ajax({
+                    url: weburl + "api/Order/StatusDfk",
+                    type: "get",
+                    success: function (data) {
+                        $("#content").empty();
+                        for (var i = 0; i < data.length ; i++) {
+                            $("#content").append("<div class=\"c-comment\">" +
+                                         "<span class=\"c-comment-num\">订单编号：" + data[i].g[0].ExpressNumber + "</span>" +
+                                         "<span class=\"c-comment-suc\">" + data[i].g[0].OrderState + "</span>" +
+                                          "</div>");
+                            for (var j = 0; j < data[i].g.length; j++) {
+                                $("#content").append("<div class=\"c-comment-list\" style=\"border: 0;\">" +
+                                            "<a class=\"o-con\" href=\"\">" +
+                                            "<div class=\"o-con-img\"><img src=\"Content/images/" + data[i].g[j].image + "\"></div>" +
+                                            "<div class=\"o-con-txt\">" +
+                                            "<p>" + data[i].g[j].MenuName + "</p>" +
+                                            "<p class=\"price\">￥" + data[i].g[j].Price + "</p>" +
+                                            "<p>合计：<span>￥" + data[i].g[j].TotalMoney + "</span></p>" +
+                                            "</div>" +
+                                            "<div class=\"o-con-much\"> <h4>x" + data[i].g[j].Quantity + "</h4></div>" +
+                                            "</a>");
+                                price = parseInt(price) + parseInt(data[i].g[j].TotalMoney);
+                            }
+                            $("#content").append("<div class=\"c-com-money\"> 实付金额：<span>￥ " + price + "</span></div>" +
+                                                 "</div>" +
+                                                 "<div class=\"c-com-btn\">" +
+                                                  "<a href=\"tureorder.html\">立即支付</a>" +
+                                                  "<a class=\"canclea\" onclick=\"canclea()\" id=\"" + data[i].g[0].OrderID + "\">取消订单</a>" +
+                                                  "</div>" +
+                                                  "<div class=\"clear\"></div>");
+                            price = 0;
+                        }
+                    }
+                })
+                $(".order-style li").removeClass("current");
+                $(this).addClass("current");
+
+            })
+            $("#dsh").click(function () {
+                $.ajax({
+                    url: weburl + "api/Order/StatusDsh",
+                    type: "get",
+                    success: function (data) {
+                        $("#content").empty();
+                        for (var i = 0; i < data.length ; i++) {
+                            $("#content").append("<div class=\"c-comment\">" +
+                                          "<span class=\"c-comment-num\">订单编号：" + data[i].g[0].ExpressNumber + "</span>" +
+                                          "<span class=\"c-comment-suc\">" + data[i].g[0].OrderState + "</span>" +
+                                           "</div>");
+                            for (var j = 0; j < data[i].g.length; j++) {
+                                $("#content").append("<div class=\"c-comment-list\" style=\"border: 0;\">" +
+                                            "<a class=\"o-con\" href=\"\">" +
+                                            "<div class=\"o-con-img\"><img src=\"Content/images/" + data[i].g[j].image + "\"></div>" +
+                                            "<div class=\"o-con-txt\">" +
+                                            "<p>" + data[i].g[j].MenuName + "</p>" +
+                                            "<p class=\"price\">￥" + data[i].g[j].Price + "</p>" +
+                                            "<p>合计：<span>￥" + data[i].g[j].TotalMoney + "</span></p>" +
+                                            "</div>" +
+                                            "<div class=\"o-con-much\"> <h4>x" + data[i].g[j].Quantity + "</h4></div>" +
+                                            "</a>");
+                                price = parseInt(price) + parseInt(data[i].g[j].TotalMoney);
+                            }
+                            $("#content").append("<div class=\"c-com-money\"> 实付金额：<span>￥ " + price + "</span></div>" +
+                                                 "</div>" +
+                                                "<div class=\"c-com-btn\">" +
+                                                  "<a class=\"surea\" onclick=\"surea()\" id=\"" + data[i].g[0].OrderID + "\">确认收货</a>" +
+                                                  "</div>" +
+                                                  "<div class=\"clear\"></div>");
+                            price = 0;
+                        }
+                    }
+                })
+                $(".order-style li").removeClass("current");
+                $(this).addClass("current");
+
+            })
+            $("#dpj").click(function () {
+                $.ajax({
+                    url: weburl + "api/Order/StatusYsh",
+                    type: "get",
+                    success: function (data) {
+                        $("#content").empty();
+                        for (var i = 0; i < data.length ; i++) {
+                            $("#content").append("<div class=\"c-comment\">" +
+                                         "<span class=\"c-comment-num\">订单编号：" + data[i].g[0].ExpressNumber + "</span>" +
+                                         "<span class=\"c-comment-suc\">" + data[i].g[0].OrderState + "</span>" +
+                                          "</div>");
+                            for (var j = 0; j < data[i].g.length; j++) {
+                                $("#content").append("<div class=\"c-comment-list\" style=\"border: 0;\">" +
+                                            "<a class=\"o-con\" href=\"\">" +
+                                            "<div class=\"o-con-img\"><img src=\"Content/images/" + data[i].g[j].image + "\"></div>" +
+                                            "<div class=\"o-con-txt\">" +
+                                            "<p>" + data[i].g[j].MenuName + "</p>" +
+                                            "<p class=\"price\">￥" + data[i].g[j].Price + "</p>" +
+                                            "<p>合计：<span>￥" + data[i].g[j].TotalMoney + "</span></p>" +
+                                            "</div>" +
+                                            "<div class=\"o-con-much\"> <h4>x" + data[i].g[j].Quantity + "</h4></div>" +
+                                            "</a>");
+                                price = parseInt(price) + parseInt(data[i].g[j].TotalMoney);
+                            }
+                            $("#content").append("<div class=\"c-com-money\"> 实付金额：<span>￥ " + price + "</span></div>" +
+                                                 "</div>" +
+                                                 "<div class=\"c-com-btn\">" +
+                                                 "<a class=\"deletea\" onclick=\"de()\" id=\"" + data[i].g[0].OrderID + "\">删除订单</a>" +
+                                                 "<a class=\"\" onclick=\"\" id=\"" + data[i].Key.OrderID + "\">评价晒单</a>" +
+                                                 "</div>" +
+                                                 "<div class=\"clear\"></div>");
+                            price = 0;
+                        }
+                    }
+                })
+                $(".order-style li").removeClass("current");
+                $(this).addClass("current");
+
+            })
+
+            //搜索框功能
+            document.onkeydown = function (event) {
+                e = event ? event : (window.event ? window.event : null);
+                if (e.keyCode == 13) {
+                    $.ajax({
+                        url: weburl + "api/Order/Search",
+                        method: "Get",
+                        data: { "OrderNumber": $(".cate-input").val() },
+                        dataType: "Json",
+                        success: function (data) {
+                            $("#content").empty();
+                            for (var i = 0; i < data.length ; i++) {
+                                $("#content").append("<div class=\"c-comment\">" +
+                                         "<span class=\"c-comment-num\">订单编号：" + data[i].g[0].ExpressNumber + "</span>" +
+                                         "<span class=\"c-comment-suc\">" + data[i].g[0].OrderState + "</span>" +
+                                          "</div>");
+                                for (var j = 0; j < data[i].g.length; j++) {
+                                    $("#content").append("<div class=\"c-comment-list\" style=\"border: 0;\">" +
+                                                "<a class=\"o-con\" href=\"\">" +
+                                                "<div class=\"o-con-img\"><img src=\"Content/images/" + data[i].g[j].image + "\"></div>" +
+                                                "<div class=\"o-con-txt\">" +
+                                                "<p>" + data[i].g[j].MenuName + "</p>" +
+                                                "<p class=\"price\">￥" + data[i].g[j].Price + "</p>" +
+                                                "<p>合计：<span>￥" + data[i].g[j].TotalMoney + "</span></p>" +
+                                                "</div>" +
+                                                "<div class=\"o-con-much\"> <h4>x" + data[i].g[j].Quantity + "</h4></div>" +
+                                                "</a>");
+                                    price = parseInt(price) + parseInt(data[i].g[j].TotalMoney);
+                                }
+                                $("#content").append("<div class=\"c-com-money\"> 实付金额：<span>￥ " + price + "</span></div>" +
+                                                     "</div>");
+                                price = 0;
+                                if (data[i].g[0].OrderState == "待付款") {
+                                    $("#content").append("<div class=\"c-com-btn\">" +
+                                                          "<a href=\"tureorder.html\">立即支付</a>" +
+                                                         "<a class=\"canclea\" onclick=\"canclea()\" id=\"" + data[i].g[0].OrderID + "\">取消订单</a>" +
+                                                          "</div>" +
+                                                          "<div class=\"clear\"></div>")
+                                }
+                                if (data[i].g[0].OrderState == "卖家已发货") {
+                                    $("#content").append("<div class=\"c-com-btn\">" +
+                                                          "<a class=\"surea\" onclick=\"surea()\" id=\"" + data[i].g[0].OrderID + "\">确认收货</a>" +
+                                                          "</div>" +
+                                                          "<div class=\"clear\"></div>")
+                                }
+                                if (data[i].g[0].OrderState == "交易成功") {
+                                    $("#content").append("<div class=\"c-com-btn\">" +
+                                                         "<a class=\"deletea\" onclick=\"de()\" id=\"" + data[i].g[0].OrderID + "\">删除订单</a>" +
+                                                         "<a class=\"\" onclick=\"\" id=\"" + data[i].Key.OrderID + "\">评价晒单</a>" +
+                                                         "</div>" +
+                                                         "<div class=\"clear\"></div>");
+                                }
+                                if (data[i].g[0].OrderState == "已收货") {
+                                    $("#content").append("<div class=\"c-com-btn\">" +
+                                                             "<a class=\"deletea\" onclick=\"de()\" id=\"" + data[i].g[0].OrderID + "\">删除订单</a>" +
+                                                              "<a class=\"\" onclick=\"\" id=\"" + data[i].g[0].OrderID + "\">退换货</a>" +
+                                                             "</div>" +
+                                                             "<div class=\"clear\"></div>");
+                                }
+                                if (data[i].g[0].OrderState == "交易取消") {
+                                    $("#content").append("<div class=\"c-com-btn\">" +
+                                                             "<a class=\"deletea\" onclick=\"de()\" id=\"" + data[i].g[0].OrderID + "\">删除订单</a>" +
+                                                             "</div>" +
+                                                             "<div class=\"clear\"></div>");
+                                }
+                            }
+                        }
+                    })
+                }
+
+            };
+        });
+
+    </script>
+</head>
+<body>
+    <header data-am-widget="header" class="am-header am-header-default header">
+        <div class="am-header-left am-header-nav">
+            <a class="back" onclick="javascript:history.back(-1);"><img src="Content/images/icon_03.png"></a>
+        </div>
+        <h1 class="am-header-title"> <a href="#title-link" class="" style="color: #333;">全部订单</a></h1>
+        <div class="am-header-right am-header-nav">
+            <a href="#right-link" class=""> </a>
+        </div>
+    </header>
+    <div class="cate-search" style="position: relative; top: 0; border-bottom: 0;">
+        <input type="text" class="cate-input" placeholder="搜索全部订单">
+        <input type="button" class="cate-btn">
+    </div>
+    <ul class="order-style">
+        <li id="all" class="current"><a href="order.html">全部</a></li>
+        <li id="dfk"><a>待付款</a></li>
+        <li id="dsh"><a>待收货</a></li>
+        <li id="dpj"><a>待评价</a></li>
+        <!--<li id="thh"><a>退换货</a></li>-->
+    </ul>
+
+    <div id="content">
+
+    </div>
+
+    <div class="popbg"></div>
+    <div class="pop popdelete" id="delete">
+        <h2>确认删除订单？</h2>
+        <p>您真的要删除该订单吗？</p>
+        <div class="only"><a>取消</a><a>确认</a></div>
+    </div>
+    <div class="pop popcancle" id="cancel">
+        <h2>确认取消订单？</h2>
+        <p>您真的要取消该订单吗？</p>
+        <div class="only"><a>取消</a><a>确认</a></div>
+    </div>
+    <div class="pop popsure" id="shouhuo">
+        <h2>确认收货</h2>
+        <p>您真的要确认收货吗？</p>
+        <div class="only"><a>取消</a><a>确认</a></div>
+    </div>
+    <!--很多弹窗-->
+
+    <script>
+        //取消订单
+        function canclea() {
+            $("body,html").css({ "overflow": "hidden" });
+            $(".popbg").fadeIn();
+            $(".popcancle").fadeIn();
+        };
+        $("#cancel .only a:last").click(function () {
+            $.ajax({
+                url: weburl + "api/Order/CancelOrder",
+                data: { OrderID: $(".canclea").attr("id") },
+                type: "get",
+                success: function () {
+                    $("body,html").css({ "overflow": "auto" });
+                    $(".popbg").fadeOut();
+                    $(".pop").fadeOut();
+                    window.location.reload();
+                }
+            })
+
+        });
+        $("#cancel .only a:first").click(function () {
+            $("body,html").css({ "overflow": "auto" });
+            $(".popbg").fadeOut();
+            $(".pop").fadeOut();
+        });
+
+        //确认收货
+        function surea() {
+            $("body,html").css({ "overflow": "hidden" });
+            $(".popbg").fadeIn();
+            $(".popsure").fadeIn();
+        };
+        $("#shouhuo .only a:last").click(function () {
+            $.ajax({
+                url: weburl + "api/Order/Confrim",
+                data: { OrderID: $(".surea").attr("id") },
+                type: "get",
+                success: function () {
+                    $("body,html").css({ "overflow": "auto" });
+                    $(".popbg").fadeOut();
+                    $(".pop").fadeOut();
+                    window.location.reload();
+                }
+            })
+
+        });
+        $("#shouhuo .only a:first").click(function () {
+            $("body,html").css({ "overflow": "auto" });
+            $(".popbg").fadeOut();
+            $(".pop").fadeOut();
+        });
+
+        //删除订单
+        function de() {
+            $("body,html").css({ "overflow": "hidden" });
+            $(".popbg").fadeIn();
+            $(".popdelete").fadeIn();
+        };
+        $("#delete .only a:last").click(function () {
+            $.ajax({
+                url: weburl + "api/Order/DeleteOrder",
+                data: { OrderID: $(".deletea").attr("id") },
+                type: "get",
+                success: function () {
+                    $("body,html").css({ "overflow": "auto" });
+                    $(".popbg").fadeOut();
+                    $(".pop").fadeOut();
+                    window.location.reload();
+                }
+            })
+
+        });
+        $("#delete .only a:first").click(function () {
+            $("body,html").css({ "overflow": "auto" });
+            $(".popbg").fadeOut();
+            $(".pop").fadeOut();
+        });
+
+    </script>
+</body>
+</html>

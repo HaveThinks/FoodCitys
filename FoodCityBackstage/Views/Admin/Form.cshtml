@@ -1,0 +1,116 @@
+﻿@{
+
+    Layout = null;
+}
+
+
+@if (ViewBag.edit == 0)
+{
+    <form id="ff">
+        <div class="form-group">
+            <label for="AdminName"><span class="glyphicon glyphicon-user"></span>用户名</label>
+            @Html.TextBox("name", null, new { placeholder = "输入账号", Class = "form-control" })
+            <span id="s1"></span>
+            <span style="display:none;color:red" id="account1">请输入4-10位账号</span>
+            <span style="display:none;color:red" id="account2">账号已被使用</span>
+        </div>
+        <div class="form-group">
+            <label for="AdminPWD"><span class="glyphicon glyphicon-lock"></span>密码</label>
+            @Html.Password("pwd", null, new { placeholder = "输入6-8位密码", Class = "form-control" })
+            <span id="s2"></span>
+            <span style="display:none;color:red;" id="re">密码长度在6-8位</span>
+        </div>
+        <div class="from-group">
+            @*<label class="control-label" for="FileUpload1">上传图片</label>
+                <input class="input-group" id="FileUpload1" name="FileUpload1" type="file" />*@
+            <label for="FileUpload1"><span class="glyphicon glyphicon-phone-alt"></span>头像</label>
+            <input class="input-group" id="FileUpload1" name="FileUpload1" type="file" />
+        </div>
+        <div class="form-group">
+            <label for="tel"><span class="glyphicon glyphicon-phone-alt"></span>Tel</label>
+            @Html.TextBox("tel", null, new { placeholder = "输入Tel", Class = "form-control" })
+            <span id="s1"></span>
+            <span style="display:none;color:red" id="account1">请输入4-10位账号</span>
+            <span style="display:none;color:red" id="account2">账号已被使用</span>
+        </div>
+        <div class="form-group">
+            <label for="AdminName"><span class="glyphicon glyphicon-envelope"></span>Email</label>
+            @Html.TextBox("email", null, new { placeholder = "输入Email", Class = "form-control" })
+            <span id="s1"></span>
+            <span style="display:none;color:red" id="account1">请输入4-10位账号</span>
+            <span style="display:none;color:red" id="account2">账号已被使用</span>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="OrderState">管理员权限</label>
+            <select class="form-control" id="power" name="OrderState" data-rel="chosen" data-placeholder="选择权限">
+                <option>超级管理员</option>
+                <option>高级管理员</option>
+                @*<option>普通管理员</option>*@
+                @*<option>@item.OrderState</option>
+                    @if (item.OrderState != "已发货")
+                    {
+                        <option>已发货</option>
+                    }
+                    else
+                    {
+                        <option>超时关闭</option>
+                    }*@
+            </select>
+        </div>
+    </form>
+}
+else
+{
+    foreach (FoodCityBackstage.Models.Admin item in ViewBag.admin)
+    {
+        <form id="ff" method="post">
+            <div class="form-group">
+                <label for="AdminName"><span class="glyphicon glyphicon-user"></span>用户名</label>
+                @Html.TextBox("name", item.AdName, new { placeholder = "输入账号", Class = "form-control" })
+                <span id="s1"></span>
+                <span style="display:none;color:red" id="account1">请输入4-10位账号</span>
+                <span style="display:none;color:red" id="account2">账号已被使用</span>
+            </div>
+            <div class="from-group">
+                <div style="float:left;display:inline;height:auto;width:50%;">
+                    <label for="FileUpload1"><span class="glyphicon glyphicon-phone-alt"></span>头像</label>
+                    <input class="input-group" id="FileUpload1" name="FileUpload1" type="file" />
+                </div>
+                <div style="float:left;display:inline;height:auto;width:50%;">
+                    <img src="~/Content/Backstage/assets/images/users/@item.ImageUrl" style="width:60px;height:60px;" />
+                </div>               
+           </div>
+            <div class="form-group">
+                <label for="tel"><span class="glyphicon glyphicon-phone-alt"></span>Tel</label>
+                @Html.TextBox("tel", item.Tel, new { placeholder = "输入Tel", Class = "form-control" })
+                <span id="s1"></span>
+                <span style="display:none;color:red" id="account1">请输入4-10位账号</span>
+                <span style="display:none;color:red" id="account2">账号已被使用</span>
+            </div>
+            <div class="form-group">
+                <label for="email"><span class="glyphicon glyphicon-envelope"></span>Email</label>
+                @Html.TextBox("email", item.Email, new { placeholder = "输入Email", Class = "form-control" })
+                <span id="s1"></span>
+                <span style="display:none;color:red" id="account1">请输入4-10位账号</span>
+                <span style="display:none;color:red" id="account2">账号已被使用</span>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="OrderState">管理员权限</label>
+
+                <select class="form-control" id="power" name="OrderState" data-rel="chosen">
+
+                    @if (item.Power == "高级管理员")
+                    {
+                        <option>@item.Power</option>
+                        <option>超级管理员</option>
+                    }
+                    else
+                    {
+                        <option>@item.Power</option>
+                        <option>高级管理员</option>
+                    }
+                </select>
+            </div>
+        </form>
+    }
+}

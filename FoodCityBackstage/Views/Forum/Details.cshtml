@@ -1,0 +1,46 @@
+﻿@{
+    Layout = null;
+}
+@foreach (var item in  ViewBag.data)
+{
+
+    <div class="form-group">
+        <label for="title1">标题</label>
+        <input type="text" id="title1" value="@item.PostTitle" class="form-control"/>
+    </div>
+    <div class="form-group">
+        <label for="title2">分类</label>
+        <select class="form-control" id="posttype" name="OrderState" data-rel="chosen">
+            @foreach (FoodCityBackstage.Models.PostType aa in ViewBag.posttype)
+            {
+                if (aa.PostTypeName == item.PostTypeName)
+                {
+                    <option selected="selected" value="@aa.PostTypeID">@aa.PostTypeName</option>
+                }
+                else
+                {
+                    <option value="@aa.PostTypeID">@aa.PostTypeName</option>
+                }
+            }
+        </select>
+           
+            @*<input type="text" id="title2" value="@item.PostTypeName" class="form-control" />*@
+    </div>
+    <div class="form-group">
+        <label>内容</label>
+        <textarea style="width:100%; height:200px;" id="content">@item.Content</textarea>
+    </div>
+    <div class="form-group">
+        <label>发布时间：@item.ReleaseTime</label>
+    </div>
+    <div class="form-group">
+        <label>发布人：@item.UserName</label>
+    </div>
+    <div class="form-group">
+        <label>浏览量：@item.BrowseVolume</label>
+    </div>
+    <div class="form-group">
+        序列号：<label id="titid1">@item.PostID</label>
+    </div>
+}
+

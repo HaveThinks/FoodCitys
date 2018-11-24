@@ -1,0 +1,264 @@
+﻿@model IEnumerable<FoodCityBackstage.Models.Admin>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">查询条件</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+                        @*用户名<br>*@
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+
+                            <input type="text" class="form-control" id="text1"  placeholder="管理员名称"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">              
+                <button class="btn  btn-success" type="button" onclick="Search()">查    询</button>
+                <button class="btn  btn-default" type="button" id="btn_create">添    加</button>               
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 页面Body -->
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- START SIMPLE DATATABLE -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">管理员</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable_simple" id="assets-data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>邮箱</th>
+
+                            <th>注册时间</th>
+                            <th>权限级别</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                        @foreach (var asset in Model)
+                        {
+                            <tr>
+                                <td>@asset.AdID.ToString()</td>
+                                <td>@asset.AdName</td>
+                                <td>@asset.Email</td>
+                                @*<td>@asset.Avatar</td>*@
+
+                                <td><span class="btn-success">@asset.CreatTime</span></td>
+                                <td>@asset.Power</td>
+                                @if (ViewBag.power =="超级管理员")
+	                           {
+                                <th>
+                                    <a class="btn  btn-info btn-xs-4 glyphicon glyphicon-edit" onclick="Update('@asset.AdID')"></a>
+                                    <a class="btn  btn-danger btn-xs-4 glyphicon glyphicon-trash" onclick="Delete('@asset.AdID')"></a>
+                                </th>
+                                }
+                                else
+                                {
+                                    <td>无操作权限</td>
+                                }
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- END SIMPLE DATATABLE -->
+    </div>
+</div>
+<!-- END 页面Body -->
+@*</div>*@
+<div class="modal fade" id="deleteForm">
+    <div class="modal-dialog">
+        <div class="modal-content message_align">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p>您确认要删除该条信息吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                    取消
+                </button>
+                <button type="button" class="btn btn-primary"
+                        id="deleteComfirm">
+                    确认
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    增加/编辑
+                </h4>
+            </div>
+            <div class="modal-body" id="add">
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="submit">
+                    submit
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script type="text/javascript">
+    //定义全局变量判断ajax请求增加还是修改 
+    var ae;
+    $(function () {
+        //增加管理员
+        $("#btn_create").click(function () {
+
+            ae = 1;
+           
+            $("#myModals").on("show.bs.modal", function () {
+                $.ajax({
+                    url: "@Url.Action("Form")",
+                    type: "post",
+                    success: function (data) {
+
+                        $("#add").html(data);
+                    }
+                })
+            });
+            $("#myModals").modal("show");
+        });
+        //模态框关闭后
+        $('#myModals').on("hidden.bs.modal", function () {
+            //关闭模态框后清除模态框数据
+
+            $(this).removeData('bs.modal');
+            window.location.reload();
+            //$("#assets-data-table").dataTable()._fnAjaxUpdate();
+        });
+        $("#submit").click(function () {
+            var img;
+            var name = $("#name").val();
+            var pwd = $("#pwd").val();
+            var tel = $("#tel").val();
+            var email = $("#email").val();
+            var power = $("#power").val();
+            
+            $("#ff").ajaxSubmit({
+                url: "@Url.Action("AddPric")",
+                type:"post",
+                success: function (data) {
+                    img = data;
+                    if (ae == 1) {
+                $.ajax({
+                    url: "@Url.Action("Addmin")",
+                    type: "post",
+                    data: { AdName: name, AdPwd: pwd, Tel: tel, Email: email, Power: power, ImageUrl: img },
+                        success: function (data) {
+                            if (data != null) {
+                                alert('添加成功!');                              
+                                $("#myModals").modal("hide");                               
+                            }
+                        }
+                    })
+              }
+              else {
+                  $.ajax({
+                        url: "@Url.Action("Eddmin")",
+                      type: "post",
+                      data: { AdID: ae, AdName: name, Tel: tel, Email: email, Power: power, ImageUrl: img},
+                        success: function (data) {
+                            if (data != null) {
+                                alert('修改成功!');                               
+                                $("#myModals").modal("hide");                                
+                            }
+                        }
+                  })
+            }
+                }
+            })
+            
+            
+        })
+    });
+    //修改商品
+    function Update(uid) {
+        ae = uid;
+        $("#myModals").on("show.bs.modal", function () {
+            $.ajax({
+                    type: "get",
+                    url: "@Url.Action("Form")",
+                    data:{id:uid},
+                    success: function (data) {
+                    $("#add").html(data);
+                 }
+            })
+        });
+        $("#myModals").modal("show");
+    };
+   //搜索管理员
+    function Search() {
+        var username = $("#text1").val();
+        window.location = '@Url.Action("Index","Admin")' + '?UserName=' + username +'&s=1';
+    }
+
+    
+    //删除商品
+    function Delete(id) {
+        $("#deleteForm").modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        $("#deleteComfirm").unbind("click").click(function () {
+            //删除数据
+            $.ajax({
+                url: "@Url.Action("DeLAdmin")",
+                data: { aa: id },
+                type: "get",
+                success: function (data) {
+                    if (data == "删除成功！") {
+                        //重新加载页面数据
+                        $("#deleteForm").modal('hide');
+                        location.reload();
+                    }
+                }
+            })
+        })
+    }
+</script>

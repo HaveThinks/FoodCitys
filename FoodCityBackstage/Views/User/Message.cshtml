@@ -1,0 +1,135 @@
+﻿@model IEnumerable<FoodCityBackstage.Models.Message>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">查询条件</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+                        @*内容<br>*@
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+
+                            <input type="text" class="form-control" id="text1"  placeholder="内容"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn  btn-success" type="button" onclick="Search()">查    询</button>
+                @*<button class="btn  btn-default" type="button" id="btn_create">添    加</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- START SIMPLE DATATABLE -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">留言管理</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable_simple" id="assets-data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户ID</th>
+                            <th>内容</th>
+                            <th>发送时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        @foreach (var asset in Model)
+                        {
+                            <tr>
+                                <td>@asset.MessageID</td>
+                                <td>@asset.UserID</td>
+                                <td>@asset.Content</td>
+                                <td>@asset.SendTime</td>
+                                <td>@asset.State</td>
+                                
+                                <td>
+                                    <a class="btn btn-primary" id="fh" onclick="see('@asset.MessageID')">查看</a>
+                                    
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- END SIMPLE DATATABLE -->
+    </div>
+</div>
+<div class="modal fade" id="Messmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    查看信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <textarea style="width:100%;height:200px;" id="tex1" ></textarea>
+            </div>
+            <div class="modal-footer">
+                @*<button type="submit" class="btn btn-primary" id="submit1">
+                    submit
+                </button>*@
+                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>     
+    function see(id) {
+
+        $.ajax({
+            url: "@Url.Action("ReadMessage")",
+            data: { Id: id },
+            type: "post",
+            success: function (data) {
+                if (data != null) {
+                    $("#Messmodel").on("show.bs.modal", function () {
+                        $("#tex1").val(data);
+                   });
+                    $("#Messmodel").modal("show");
+                }
+            }
+        })
+    }
+    function Search() {
+        var username = $("#text1").val();
+        window.location = '@Url.Action("Message","User")' + '?UserName=' + username +'&s=1';
+    }
+    $(function () {
+        $('#Messmodel').on("hidden.bs.modal", function () {
+            //关闭模态框后清除模态框数据
+
+            $(this).removeData('bs.modal');
+            window.location.reload();
+            //$("#assets-data-table").dataTable()._fnAjaxUpdate();
+        });
+    })
+   
+</script>

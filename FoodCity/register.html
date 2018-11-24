@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>美食商城</title>
+    <meta name="description" content="particles.js is a lightweight JavaScript library for creating particles.">
+    <meta name="author" content="Vincent Garreau" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" media="screen" href="Content/css/style1.css">
+    <link rel="stylesheet" type="text/css" href="Content/css/reset.css" />
+    <script src="Content/js/jquery-3.2.1.min.js"></script>
+    <!--<script src="Content/js/jquery.form.js"></script>-->
+    <script src="Content/js/tools.js"></script>
+    <style>
+        .login {
+            height: auto;
+        }
+
+        .login-button {
+            margin-bottom: 10px;
+        }
+
+        .login-top {
+            margin-top: 80px;
+        }
+    </style>
+    <script type="text/javascript">
+        var imagename;
+        $(function () {
+            $("#submit").click(function () {
+                $.ajax({
+                    url: weburl + "api/User/Register",
+                    method: "Post",
+                    headers: { "content-type": "application/x-www-form-urlencoded" },
+                    data: { UserName: $("#name").val(), UserPwd: $("#pwd").val(), Sex: $("#sex").val(), Tel: $("#tel").val(), Birthday: $("#bir").val(), Email: $("#email").val(), ImageUrl: imagename },
+                    success: function (data) {
+                        if (data != "") {
+                            alert("注册成功!");
+                            window.location.href = "login.html";
+                        }
+                        else {
+                            alert("用户名已存在！");
+                        }
+                    }
+                })
+            })
+        });
+    </script>
+</head>
+<body>
+        <div id="particles-js">
+            <div class="login">
+                <div class="login-top">
+                    注册
+                </div>
+                <div class="login-center clearfix">
+                    <div class="login-center-img"><img src="Content/images/name.png" /></div>
+                    <div class="login-center-input">
+                        <input type="text" id="name" name="" placeholder="请输入您的用户名" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的用户名'" />
+                        <div class="login-center-input-text">用户名</div>
+                    </div>
+                </div>
+                <div class="login-center clearfix">
+                    <div class="login-center-img"><img src="Content/images/name.png" /></div>
+
+                    <select id="sex" class="login-center-input">
+                        <option>请选择您的性别</option>
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+
+                </div>
+                <div class="login-center clearfix">
+                    <div class="login-center-img"><img src="Content/images/password.png" /></div>
+                    <div class="login-center-input">
+                        <input type="password" id="pwd" name="" placeholder="请输入您的密码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的密码'" />
+                        <div class="login-center-input-text">密码</div>
+                    </div>
+                </div>
+                <div class="login-center clearfix">
+                  选择头像：<img id="pic" style="width:100px;height:100px;border-radius:50%;" src="Content/images/1283568_101936_6703.jpg">
+                    <input name="file" id="upload" style="display: none" type="file" accept="image/*">
+
+                    <script>
+                        $(function () {
+                            $("#pic").click(function () {
+                                $("#upload").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+                                $("#upload").on("change", function () {
+                                    var objUrl = getObjectURL(this.files[0]); //获取图片的路径，该路径不是图片在本地的路径
+                                    if (objUrl) {
+                                        $("#pic").attr("src", objUrl); //将图片路径存入src中，显示出图片
+                                        upimg();
+                                    }
+                                });
+                            });
+                        });
+
+                        //建立一?可存取到?file的url
+                        function getObjectURL(file) {
+                            var url = null;
+                            if (window.createObjectURL != undefined) { // basic
+                                url = window.createObjectURL(file);
+                            } else if (window.URL != undefined) { // mozilla(firefox)
+                                url = window.URL.createObjectURL(file);
+                            } else if (window.webkitURL != undefined) { // webkit or chrome
+                                url = window.webkitURL.createObjectURL(file);
+                            }
+                            return url;
+                        }
+                        //上传头像到服务器
+                        function upimg() {
+                            console.log(344)
+                            var pic = $('#upload')[0].files[0];
+                            var file = new FormData();
+                            file.append('image', pic);
+                            
+                            $.ajax({
+                                url: weburl +"api/Add/image",
+                                type: "post",
+                                data: file,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success: function (data) {
+                                    console.log(data);
+                                    imagename = data;
+                                    var res = data;
+                                    $("#resimg").append("<img src='/" + res + "'>")
+                                }
+                            });
+                        }
+                    </script>
+                </div>
+                <div class="login-center clearfix">
+                    <div class="login-center-img"><img src="Content/images/name.png" /></div>
+                    <div class="login-center-input">
+                        <input type="text" id="bir" name="" placeholder="请输入您的出生日期" onfocus="this.placeholder = ''" onblur="    this.placeholder = '请输入您的出生日期'" />
+                        <div class="login-center-input-text">出生日期</div>
+                    </div>
+                </div>
+
+                <div class="login-center clearfix">
+                    <div class="login-center-img"><img src="Content/images/name.png" /></div>
+                    <div class="login-center-input">
+                        <input type="text" id="tel" name="" placeholder="请输入您的联系方式" onfocus="this.placeholder = ''" onblur="    this.placeholder = '请输入您的联系方式'" />
+                        <div class="login-center-input-text">联系方式</div>
+                    </div>
+                </div>
+
+                <div class="login-center clearfix">
+                    <div class="login-center-img"><img src="Content/images/name.png" /></div>
+                    <div class="login-center-input">
+                        <input type="text" id="email" name="" placeholder="请输入您的电子邮箱" onfocus="this.placeholder = ''" onblur="    this.placeholder = '请输入您的电子邮箱'" />
+                        <div class="login-center-input-text">电子邮箱</div>
+                    </div>
+                </div>
+                <div class="login-button" id="submit">
+                    注册
+                </div>
+            </div>
+            <div class="sk-rotating-plane"></div>
+        </div>
+        <!-- scripts -->
+        <script src="Content/js/particles.min.js"></script>
+        <script src="Content/js/app.js"></script>
+</body>
+</html>

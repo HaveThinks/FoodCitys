@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- META SECTION -->
+    <title>Atlant - Responsive Bootstrap Admin Template</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <!-- END META SECTION -->
+    <!-- CSS INCLUDE -->
+    @*<link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css" />*@
+    <link href="~/Content/Backstage/css/theme-default.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-fileinput.css" rel="stylesheet" />
+    <!-- EOF CSS INCLUDE -->
+</head>
+<body>
+    <!-- 页面容器 -->
+    <div class="page-container">
+        <!-- 页面导航 -->
+        <div class="page-sidebar">
+            @Html.Action("Nav", "Backstage")
+        </div>
+        <!-- END 页面导航 -->
+        <!-- 页面内容 -->
+        <div class="page-content">
+            <!-- START X-NAVIGATION VERTICAL -->
+            <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                @Html.Action("Header", "Backstage")
+            </ul>
+            <!-- END X-NAVIGATION VERTICAL -->
+            <!-- 面包屑 -->
+            <ul class="breadcrumb">
+                <li><a href="/index.html">首页</a></li>
+                <li class="active">控制台</li>
+            </ul>
+            <!-- END 面包屑 -->
+            <!-- 页面内容 -->
+            <div class="page-content-wrap">
+                @RenderBody()
+            </div>
+
+            <!-- END DASHBOARD CHART -->
+        </div>
+        <!-- END 页面内容-->
+    </div>
+    <!-- END 页面容器 -->
+    <!-- MESSAGE BOX(注销用户)-->
+    <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+        <div class="mb-container">
+            <div class="mb-middle">
+                <div class="mb-title"><span class="fa fa-sign-out"></span> 登 <strong>出</strong> ?</div>
+                <div class="mb-content">
+                    <p>你确定要登出系统吗?</p>
+                    <p>点击取消按钮继续工作. 点击确定登出当前用户.</p>
+                </div>
+                <div class="mb-footer">
+                    <div class="pull-right">
+                        <a href="@Url.Action("Layout","Login")" class="btn btn-success btn-lg">确定</a>
+                        <button class="btn btn-default btn-lg mb-control-close">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END MESSAGE BOX-->
+    <!-- 脚本 -->
+    <!-- 库 -->
+    <script src="~/Content/Backstage/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/bootstrap-fileinput.js"></script>
+    <script src="~/Content/Backstage/js/plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/jquery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/bootstrap/bootstrap.min.js"></script>
+    <!-- END 库 -->
+    <!-- 插件-->
+    <script type='text/javascript' src='~/Content/Backstage/js/plugins/icheck/icheck.min.js'></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/scrolltotop/scrolltopcontrol.js"></script>
+
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/morris/raphael-min.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/morris/morris.min.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/rickshaw/d3.v3.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/rickshaw/rickshaw.min.js"></script>
+    <script type='text/javascript' src='~/Content/Backstage/js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'></script>
+    <script type='text/javascript' src='~/Content/Backstage/js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'></script>
+    <script type='text/javascript' src='~/Content/Backstage/js/plugins/bootstrap/bootstrap-datepicker.js'></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/owl/owl.carousel.min.js"></script>
+
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/moment.min.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/daterangepicker/daterangepicker.js"></script>
+
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/bootstrap/bootstrap-file-input.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/bootstrap/bootstrap-select.js"></script>
+
+
+    <script src="~/Content/Backstage/jquery.form.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/tagsinput/jquery.tagsinput.min.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins/datatables/jquery.dataTables.min.js"></script>
+    <!-- END 插件-->
+    <!-- 模板 -->
+    <script type="text/javascript" src="~/Content/Backstage/js/settings.js"></script>
+
+    <script type="text/javascript" src="~/Content/Backstage/js/plugins.js"></script>
+    <script type="text/javascript" src="~/Content/Backstage/js/actions.js"></script>
+
+    <script type="text/javascript" src="~/Content/Backstage/js/demo_dashboard.js"></script>
+
+    @*//百度编辑器*@
+   
+</body>
+</html>

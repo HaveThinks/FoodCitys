@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>美食商城</title>
+    <meta name="description" content="美食商城" />
+    <meta name="keywords" content="美食商城" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="Content/css/amazeui.min.css" />
+    <link href="Content/css/style.css" rel="stylesheet" />
+    <script type="text/javascript" src="Content/js/jquery.min.js"></script>
+    <script type="text/javascript" src="Content/js/amazeui.min.js"></script>
+    <script src="Content/js/jquery-3.2.1.min.js"></script>
+    <script src="Content/js/tools.js"></script>
+    
+    <style>
+        .makesure {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 42px;
+    line-height: 42px;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    background-color: #000;
+    display: block;
+}
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url: weburl + "api/User/Address",
+                method: "Get",
+                dataType: "Json",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Default) {
+                            $(".address-list").append("<li>" +
+                                                "<p>收货人：" + data[i].Consignee + "&nbsp;&nbsp;" + data[i].Ctel + "</p>" +
+                                               "<p class=\"order-add1\">收货地址：" + data[i].Address + "</p>" +
+                                               "<hr>" +
+                                               "<div class=\"address-cz\">" +
+                                               "<label class=\"am-radio am-warning\" onclick=\"de()\">" +
+                                               "<input type=\"radio\" name=\"radio3\" id=\"" + data[i].ShipAddressID + "\" data-am-ucheck=\"\" checked=\"checked\" class=\"am-ucheck-radio\"><span class=\"am-ucheck-icons\"><i class=\"am-icon-unchecked\"></i><i class=\"am-icon-checked\"></i></span> 设为默认" +
+                                               "</label>" +
+                                               "<a href=\"editaddress.html?id=" + data[i].ShipAddressID + "\" style=\"width:60%\"><img src=\"Content/images/bj.png\" style=\"width: 18px;\">&nbsp;编辑</a>" +
+                                               "</div>" +
+                                               "</li>");
+                        }
+                        else {
+                            $(".address-list").append("<li>" +
+                                               "<p>收货人：" + data[i].Consignee + "&nbsp;&nbsp;" + data[i].Ctel + "</p>" +
+                                              "<p class=\"order-add1\">收货地址：" + data[i].Address + "</p>" +
+                                              "<hr>" +
+                                              "<div class=\"address-cz\">" +
+                                              "<label class=\"am-radio am-warning\" onclick=\"de()\">" +
+                                              "<input type=\"radio\" name=\"radio3\" id=\"" + data[i].ShipAddressID + "\" data-am-ucheck=\"\" class=\"am-ucheck-radio\"><span class=\"am-ucheck-icons\"><i class=\"am-icon-unchecked\"></i><i class=\"am-icon-checked\"></i></span> 设为默认" +
+                                              "</label>" +
+                                              "<a href=\"editaddress.html?id=" + data[i].ShipAddressID + "\" style=\"width:60%\"><img src=\"Content/images/bj.png\" style=\"width: 18px;\">&nbsp;编辑</a>" +                                     
+                                              "</div>" +
+                                              "</li>");
+                        }
+
+                    }
+                }
+            });                  
+        });
+
+        function de() {
+            var id = "";
+            $(".address-list li input:checked").each(function () {
+                    id=$(this).attr("id")            
+            })
+                $.ajax({
+                    url: weburl + "api/User/Default",
+                    data: { AddressID: id },
+                    type: "get",
+                    success: function (data) {
+                        window.location.reload();
+                    }
+                })
+            
+        };
+    </script>
+</head>
+<body>
+    <header data-am-widget="header" class="am-header am-header-default header">
+        <div class="am-header-left am-header-nav">
+            <a class="back" onclick="javascript:history.back(-1);"><img src="Content/images/icon_03.png"></a>
+        </div>
+        <h1 class="am-header-title"> <a href="#title-link" class="" style="color: #333;">收货地址</a></h1>
+        <div class="am-header-right am-header-nav">
+            <a href="#right-link" class=""> </a>
+        </div>
+    </header>
+    <ul class="address-list">
+    </ul>
+    <a class="makesure" href="addaddress.html">添加收货地址</a>
+</body>
+</html>

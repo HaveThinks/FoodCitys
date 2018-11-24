@@ -1,0 +1,191 @@
+﻿@model IEnumerable<FoodCityBackstage.Models.Category>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">查询条件</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+                        @*分类名称<br>*@
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+
+                            <input type="text" class="form-control" id="text1"   placeholder="分类名称"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn  btn-success" type="button" onclick="Search()">查    询</button>
+                <button class="btn  btn-default" type="button" onclick="Add()">添    加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- START SIMPLE DATATABLE -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">管理员</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable_simple" id="assets-data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            @*<th>邮箱</th>
+
+                            <th>注册时间</th>
+                            <th>权限级别</th>*@
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                        @foreach (var asset in Model)
+                        {
+                            <tr>
+                                <td>@asset.CategoryID</td>
+                                <td>@asset.CategoryName</td>
+                                <td>
+                                    <a class="btn btn-primary" onclick="Update('@asset.CategoryID')">编辑</a>
+                                    <a class="btn btn-primary" onclick="Delete('@asset.CategoryID')">删除</a>
+                                </td>
+                                
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- END SIMPLE DATATABLE -->
+    </div>
+</div>
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabeclass" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabeclass">
+                    增加/编辑
+                </h4>
+            </div>
+            <div class="modal-body" id="add">
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="submit">
+                    submit
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script src="~/Content/Backstage/jquery-3.3.1.min.js"></script>
+<script>
+    $(function () {
+        $('#myModals').on("hidden.bs.modal", function () {
+            //关闭模态框后清除模态框数据并刷新页面
+
+            $(this).removeData('bs.modal');
+            window.location.reload();
+
+        });
+    })
+    var ae;
+    function Add() {
+        ae = 1;
+           
+            $("#myModals").on("show.bs.modal", function () {
+                $.ajax({
+                    url: "@Url.Action("Form")",
+                    type: "post",
+                    success: function (data) {
+
+                        $("#add").html(data);
+                    }
+                })
+            });
+            $("#myModals").modal("show");
+    }
+    function Update(uid) {
+        ae = uid;
+         $("#myModals").on("show.bs.modal", function () {
+                $.ajax({
+                    url: "@Url.Action("Form")",
+                    type: "post",
+                    data: { id: uid },
+                    success: function (data) {
+
+                        $("#add").html(data);
+                    }
+                })
+            });
+            $("#myModals").modal("show");
+       
+    }
+    function Search() {
+        var content = $("#text1").val();
+        window.location = '@Url.Action("Menuclass", "Menu")' + '?Content=' + content +'&s=1';
+    }
+    function Delete(id) {
+        $.ajax({
+            url: "@Url.Action("Deleteclass")",
+            data: { ID: id },
+            type:"post",
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+            }
+        })
+    }
+    $("#submit").click(function () {
+           
+            var name = $("#name").val();
+            if (ae == 1) {
+                $.ajax({
+                    url: "@Url.Action("AddMenuclass")",
+                    type: "post",
+                    data: { CategoryName: name},
+                        success: function (data) {
+                            if (data != null) {
+                                alert(data);                              
+                                $("#myModals").modal("hide");                               
+                            }
+                        }
+                })
+            }
+            else {
+                  $.ajax({
+                      url: "@Url.Action("EdMenuclass")",
+                      type: "post",
+                      data: { CategoryID: ae, CategoryName: name},
+                        success: function (data) {
+                            if (data != null) {
+                                alert(data);                               
+                                $("#myModals").modal("hide");                                
+                            }
+                        }
+                  })
+            }                            
+    })   
+</script>

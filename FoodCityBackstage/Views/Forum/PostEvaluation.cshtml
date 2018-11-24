@@ -1,0 +1,156 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">查询条件</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+
+                            <input type="text" class="form-control" id="text1" placeholder="用户名" />
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+
+                            <input type="text" class="form-control" id="text2" placeholder="帖子标题" />
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn  btn-success" type="button" onclick="Search()">查    询</button>
+              
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- START SIMPLE DATATABLE -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">评论管理</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable_simple" id="assets-data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>标题</th>
+                            <th>评论时间</th>  
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                        @foreach (var asset in ViewBag.data)
+                        {
+                            <tr>
+                                <td>@asset.PostEvaluationID</td>
+                                <td>@asset.UserName</td>                              
+                                <td>@asset.PostTitle</td>
+                                <td>@asset.ReleaseTime</td>
+                                <td>
+                                    <a class="btn btn-primary" onclick="Update('@asset.PostEvaluationID')">查看</a>
+                                    <a class="btn btn-primary" onclick="Delete('@asset.PostEvaluationID')">删除</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- END SIMPLE DATATABLE -->
+    </div>
+</div>
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabeclass" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabeclass">
+                   评论详情
+                </h4>
+            </div>
+            <div class="modal-body" id="add">
+               
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="submit">
+                    submit
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script src="~/Content/Backstage/jquery-3.3.1.min.js"></script>
+<script>
+   function Search()//查询
+    {
+       var content = $("#text1").val();
+       var title = $("#text2").val();
+       window.location = '@Url.Action("PostEvaluation", "Forum")' + '?name=' + content + '&title=' + title + '&s=1';
+    }
+    $(function () {
+        $('#myModals').on("hidden.bs.modal", function () {
+            //关闭模态框后清除模态框数据并刷新页面
+            $(this).removeData('bs.modal');
+            location.reload();
+
+        });
+    })
+    //定义变量判断添加还是修改  
+    function Delete(id) {
+        $.ajax({
+            url: "@Url.Action("DelEvl")",
+            data: { ID: id },
+            type:"post",
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+            }
+        })
+    }
+    //查看
+    function Update(uid) {
+        var aa="";
+         $("#myModals").on("show.bs.modal", function () {
+                $.ajax({
+                    url: "@Url.Action("Evadetail")",
+                    type: "post",
+                    data: { id: uid },
+                    success: function (data) {
+                        aa += "<a>评论人：" + data.UserName + "</a> <br />" +
+                            " <textarea style=\"width: 100%; height: 200px; \" id=\"tex1\">" + data.Content + "</textarea> <br />" +
+                            "<a>评论时间：" + data.ReleaseTime + "</a> <br />";
+                        $("#add").html(aa);
+                    }
+                      
+                })
+           
+         });
+            $("#myModals").modal("show");
+    }
+   
+   
+</script>

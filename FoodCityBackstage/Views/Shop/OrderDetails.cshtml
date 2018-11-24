@@ -1,0 +1,26 @@
+﻿@{
+    Layout = null;
+}
+<link href="~/Content/Backstage/css/center.css" rel="stylesheet" />
+<div class="centerorder">
+    <div class="list">
+        <div class="sg">
+            <a class="num" href="#"><span>订单号：@ViewBag.ExpressNumber</span><i>@ViewBag.OrderState</i></a>
+            @foreach (var item in ViewBag.data1)
+            {
+                <div class="thing">
+                    <a href="#" class="imga"><img src="~/Content/Backstage/assets/images/Menu/@item.image" alt=""></a>
+                    <div class="text">
+                        <a class="name" href="#"><span><i>@item.MenuName</i><em>规格：套餐</em></span><span class="price"><i>￥@item.Price</i><em>*@item.Quantity</em></span></a>
+                        <a class="discuss" href="#">查看评价</a>
+                    </div>
+                </div>
+            }
+            <div class="sum">备注：<i>@ViewBag.note</i></div>
+            <div class="sum">共<i>@ViewBag.Count</i>件商品  合计：<b>￥<em>@ViewBag.money</em></b></div>
+
+            @*<div class="caozuo"><a class="deletea">订单状态：@ViewBag.OrderState</a></div>*@
+        </div>
+    </div>
+</div>
+

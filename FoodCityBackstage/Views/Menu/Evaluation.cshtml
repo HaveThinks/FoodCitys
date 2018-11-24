@@ -1,0 +1,121 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">查询条件</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+
+                            <input type="text" class="form-control" id="text1" placeholder="菜品名称" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn  btn-success" type="button" onclick="Search()">查    询</button>
+                @*<button class="btn  btn-default" type="button" onclick="Add()">添    加</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- START SIMPLE DATATABLE -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">菜单管理</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable_simple" id="assets-data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>菜品名称</th>
+                            <th>用户名</th>
+                            <th>内容</th>
+                            <th>星级</th>
+                            <th>评价时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                        @foreach (var asset in ViewBag.data)
+                        {
+                            <tr>
+                                <td>@asset.EvaluationID</td>
+                                <td>@asset.MenuName</td>
+                                <td>@asset.UserName</td>
+                                <td>@asset.Content</td>
+                                <td>@asset.Star</td>
+                                <td>@asset.CreateTime</td>
+                                <td>
+                                    @*<a class="btn btn-primary" onclick="Update('@asset.EvaluationID')">编辑</a>*@
+                                    <a class="btn btn-primary" onclick="Delete('@asset.EvaluationID')">删除</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- END SIMPLE DATATABLE -->
+    </div>
+</div>
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabeclass" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabeclass">
+                    增加/编辑
+                </h4>
+            </div>
+            <div class="modal-body" id="add">
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="submit">
+                    submit
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script src="~/Content/Backstage/jquery-3.3.1.min.js"></script>
+<script>
+     function Search() {
+        var content = $("#text1").val();
+         window.location = '@Url.Action("Evaluation", "Menu")' + '?Content=' + content +'&s=1';
+    }
+    function Delete(id) {
+         $.ajax({
+             url: "@Url.Action("DelEva", "Menu")",
+             data: { id: id },
+                    type: "post",
+                    success: function (data) {
+                        alert(data);
+                        location.reload();
+                    }
+                })
+    }
+</script>

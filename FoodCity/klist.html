@@ -1,0 +1,90 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>美食商城</title>
+    <meta name="description" content="美食商城" />
+    <meta name="keywords" content="美食商城" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="Content/css/amazeui.min.css" />
+    <link href="Content/css/style.css" rel="stylesheet" />
+    <script type="text/javascript" src="Content/js/jquery.min.js"></script>
+    <script type="text/javascript" src="Content/js/amazeui.min.js"></script>
+    <script src="Content/js/tools.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url:weburl+"api/Post/GetType",
+                method: "Get",
+                data: { PostTypeID: GetID() },
+                dataType: "Json",
+                success: function (data) {
+                    if (data != "") {
+                        for (var i = 0; i < data.length; i++) {
+                            $(".nokeshuo").append("<div class=\"am-g am-intro-bd\">" +
+                            "<a href=\"content.html?id=" + data[i].PostID + "\">" +
+                            "<div class=\"am-intro-left am-u-sm-3\"><img class=\"communityPage-img\" style=\"width:100%;\" src=\"Content/images/p.png\"/></div>" +
+                           "<div class=\"am-intro-right am-u-sm-9\">" +
+                           "<h2>" + data[i].PostName + "</h2>" +
+                           "<p>" + data[i].PostTitle + "</p>" +
+                           "<div class=\"text\">" +
+                           "<span class=\"fl\">" + data[i].ReleaseTime + "</span>" +
+                           "<span class=\"fr\"><i class=\"am-icon-thumbs-o-up\"></i>&nbsp;点赞</span>" +
+                          "</div>" +
+                          "</div>" +
+                          "</a>" +
+                          "</div>");                         
+                        }
+                        $("#top").append(" <p class=\"communityPage-num\"><label>话题<span class=\"communityPage-topic-num cmn-theme-color\">" + data.length + "</span></label><label>回复<span class=\"communityPage-comment-num cmn-theme-color\">0</span></label></p>")
+                        $(".communityPage-publish-btn").append("<span><a href=\"release.html?id=" + GetID() + "\">发布</a></span>");
+                    }
+                    else {
+                        $(".nokeshuo").append("<img src=\"Content/images/none.png\" /><p>还没话题，快来说两句</p>");
+                        $(".communityPage-publish-btn").append("<span><a href=\"release.html?id=" + GetID() + "\">发布</a></span>");
+                    }
+                }
+            })
+
+
+
+        });
+
+        //截取url上的帖子类型ID
+        function GetID() {
+            var id = window.location.search;
+            var idvalue = id.substring(4);
+            return idvalue;
+        }
+
+
+    </script>
+</head>
+<body>
+    <header data-am-widget="header" class="am-header am-header-default header">
+        <div class="am-header-left am-header-nav">
+            <a href="speak.html" class="">
+                <i class="am-header-icon am-icon-angle-left"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title"> <a href="#title-link" class="" style="color: #333;">美食商城</a></h1>
+        <div class="am-header-right am-header-nav">
+            <a href="#right-link" class=""> </a>
+        </div>
+    </header>
+    <div class="communityPage-main">
+        <div class="communityPage-info">
+            <img class="communityPage-img" src="Content/images/detail.png" style="width:60px;height:60px;">
+            <div id="top">
+                <p class="communityPage-title"> 美食快拍</p>
+               
+            </div>
+        </div>
+        <div class="communityPage-topic cmn-theme-color-active" id="communityPage-topic"><a class="active">全部</a></div>
+    </div>
+    <div class="nokeshuo">
+        
+    </div>
+    <div class="communityPage-publish-btn cmn-theme-bgcolor" id="communityPage-publish-btn"></div>
+</body>
+</html>

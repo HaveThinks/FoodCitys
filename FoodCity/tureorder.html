@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="description" content="Free Web tutorials">
+    <meta name="keywords" content="HTML,CSS,JavaScript">
+    <meta content="telephone=no" name="format-detection">
+    <title>美食商城</title>
+    <link href="Content/css/Cbase.css" type="text/css" rel="stylesheet">
+    <link href="Content/css/index.css" type="text/css" rel="stylesheet">
+    <link href="Content/css/swiper.min.css" type="text/css" rel="stylesheet">
+    <script src="Content/js/jquery-1.7.2.min.js" type="text/javascript"></script>
+    <script src="Content/js/base.js" type="text/javascript"></script>
+    <script src="Content/js/swiper.min.js" type="text/javascript"></script>
+    <script src="Content/js/index.js" type="text/javascript"></script>
+    <script src="Content/js/tools.js"></script>
+    <script>
+        $(function () {
+            var kdf = 0;
+            var zj = 0;
+            var hj = 0;
+            $.ajax({
+                url: weburl + "api/Order/Pay",
+                type: "get",
+                data: { OrderID: GetID() },
+                success: function (data) {
+                    $(".address").append(" <div>" +
+                                            "<h2><span>收货人: " + data[0].Consignee + "</span><i>" + data[0].Ctel + "</i></h2>" +
+                                            "<p>收货地址：" + data[0].Address + "</p>" +
+                                            "</div>")
+                    for (var i = 0; i < data.length; i++) {
+                        $(".goods_list ul").append("<li>" +
+                                                   "<a href=\"detail.html?id=" + data[i].MenuID + "\">" +
+                                                   "<img src=\"Content/images/" + data[i].image + "\">" +
+                                                   "<div>" +
+                                                   "<p>" + data[i].MenuName + "</p><span>规格：500g/袋</span>" +
+                                                   "<h3><span>¥" + data[i].Quantity * data[i].Price + "</span><i>x" + data[i].Quantity + "</i></h3>" +
+                                                   "</div>" +
+                                                   "</a>" +
+                                                   "</li>");
+                        kdf = parseInt(kdf) + parseInt(data[i].Shipping)
+                        zj = parseInt(zj) + parseInt(data[i].Quantity * data[i].Price)
+
+                    }
+                    $(".message").append("<label>留言备注</label>" +
+                                        "<textarea id=\"note\" rows=\"2\" placeholder=\"请输入您想要备注的内容\"></textarea>")
+                    hj = parseInt(zj) + parseInt(kdf);
+
+                    $(".delivery").append("<span>配送费</span><p>免邮费/快递费<i>￥" + kdf + "</i></p>");
+                    $(".sunm").append("共<i>" + data.length + "</i>件商品，合计:<i>￥" + hj + "</i>(含快递费)");
+                    $(".amount").append("<span>需付:<i>￥" + hj + "</i></span>" +
+                                         "<a class=\"p_order\">去支付</a>");
+                    $(".p_order").click(function () {
+                        var bz = $("#note").val();
+                        window.location.href = "turepay.html?data=" + hj + "," + bz + ","+data[0].OrderID+"";
+                    })
+
+
+                }
+
+            })
+        });
+
+
+
+        //截取url上的帖子ID
+        function GetID() {
+            var id = window.location.search;
+            var idvalue = id.substring(4);
+            return idvalue;
+        }
+    </script>
+</head>
+
+<body>
+    <!--ftop开始-->
+    <div class="ftop">
+        <a class="back" onclick="javascript:history.back(-1);"><img src="Content/images/icon_03.png"></a>
+        <h2>确认订单</h2>
+        <a class="comea">&nbsp;</a>
+        <div style="clear: both;"></div>
+    </div>
+    <!--ftop开始-->
+    <div class="address">
+
+    </div>
+    <div class="goods_list">
+        <h2>商品清单</h2>
+        <ul></ul>
+    </div>
+    <div class="delivery">
+
+    </div>
+    <div class="message">
+
+    </div>
+    <p class="sunm"></p>
+    <div class="amount">
+
+    </div>
+</body>
+</html>

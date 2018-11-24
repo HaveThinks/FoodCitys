@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>美食商城</title>
+    <meta name="description" content="美食商城" />
+    <meta name="keywords" content="美食商城" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="Content/css/amazeui.min.css" />
+    <link rel="stylesheet" href="Content/css/style.css" />
+
+    <script src="Content/js/jquery-3.2.1.min.js"></script>
+    <script src="Content/js/tools.js"></script>
+
+    <style>
+        .paixu {            
+            z-index:auto;
+            position:fixed;
+            width:100%;
+        }      
+    </style>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url: weburl + "api/Menu/More",
+                method: "Get",
+                dataType: "Json",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#search").append("<li>" +
+                        "<div class=\"am-gallery-item\">" +
+                        "<a href=\"detail.html?id=" + data[i].MenuID + "\" class=\"\">" +
+                        "<img src=\"Content/images/" + data[i].image + "\" alt=\"\" />" +
+                        "<h3 class=\"am-gallery-title\">" + data[i].MenuName + "</h3>" +
+                        "<div class=\"am-gallery-desc\">" +
+                        "<em>￥" + data[i].Price + "</em><i class=\"am-icon-cart-plus\"></i>" +
+                        "</div>" +
+                        "</a>" +
+                        "</div>" +
+                        "</li>");
+                    }
+                }
+            });
+
+            $("#default").click(function () {
+                $.ajax({
+                    url: weburl + "api/Menu/More",
+                    method: "Get",
+                    dataType: "Json",
+                    success: function (data) {
+                        $("#search").empty();
+                        for (var i = 0; i < data.length; i++) {
+                            $("#search").append("<li>" +
+                            "<div class=\"am-gallery-item\">" +
+                            "<a href=\"detail.html?id=" + data[i].MenuID + "\" class=\"\">" +
+                            "<img src=\"Content/images/" + data[i].image + "\" alt=\"\" />" +
+                            "<h3 class=\"am-gallery-title\">" + data[i].MenuName + "</h3>" +
+                            "<div class=\"am-gallery-desc\">" +
+                            "<em>￥" + data[i].Price + "</em><i class=\"am-icon-cart-plus\"></i>" +
+                            "</div>" +
+                            "</a>" +
+                            "</div>" +
+                            "</li>");
+                        }
+                    }
+                })
+            });
+
+            $("#sales").click(function () {
+                $.ajax({
+                    url: weburl + "api/Menu/SortSales",
+                    method: "Get",
+                    dataType: "Json",
+                    success: function (data) {
+                        $("#search").empty();
+                        for (var i = 0; i < data.length; i++) {
+                            $("#search").append("<li>" +
+                            "<div class=\"am-gallery-item\">" +
+                            "<a href=\"detail.html?id=" + data[i].MenuID + "\" class=\"\">" +
+                            "<img src=\"Content/images/" + data[i].image + "\" alt=\"\" />" +
+                            "<h3 class=\"am-gallery-title\">" + data[i].MenuName + "</h3>" +
+                            "<div class=\"am-gallery-desc\">" +
+                            "<em>￥" + data[i].Price + "</em><i class=\"am-icon-cart-plus\"></i>" +
+                            "</div>" +
+                            "</a>" +
+                            "</div>" +
+                            "</li>");
+                        }
+                    }
+                })
+            });
+
+            $("#price").click(function () {
+                $.ajax({
+                    url: weburl + "api/Menu/SortPrice",
+                    method: "Get",
+                    dataType: "Json",
+                    success: function (data) {
+                        $("#search").empty();
+                        for (var i = 0; i < data.length; i++) {
+                            $("#search").append("<li>" +
+                            "<div class=\"am-gallery-item\">" +
+                            "<a href=\"detail.html?id=" + data[i].MenuID + "\" class=\"\">" +
+                            "<img src=\"Content/images/" + data[i].image + "\" alt=\"\" />" +
+                            "<h3 class=\"am-gallery-title\">" + data[i].MenuName + "</h3>" +
+                            "<div class=\"am-gallery-desc\">" +
+                            "<em>￥" + data[i].Price + "</em><i class=\"am-icon-cart-plus\"></i>" +
+                            "</div>" +
+                            "</a>" +
+                            "</div>" +
+                            "</li>");
+                        }
+                    }
+                })
+            });
+        });   
+    </script>
+</head>
+<body id="main">
+    <header id="header" data-am-widget="header" class="am-header am-header-default header">
+        <div class="am-header-left am-header-nav">
+            <a class="back" onclick="javascript:history.back(-1);"><img src="Content/images/icon_03.png"></a>
+        </div>
+        <h1 class="am-header-title"> <a href="#title-link" class="" style="color: #333;">美食商城</a></h1>
+        <div class="am-header-right am-header-nav">
+            <a href="#right-link" class=""> </a>
+        </div>
+    </header>
+    <ul class="paixu">
+        <li><a id="default">默认</a></li>
+        <li><a id="sales">销量</a></li>
+        <li><a id="price">价格</a></li>
+    </ul>
+    <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-3 am-avg-lg-4 am-gallery-default product" id="search"></ul>
+    <div class="h50"></div>
+    <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default footer " id="">
+        <ul class="am-navbar-nav am-cf am-avg-sm-4">
+            <li>
+                <a href="index.html" class="">
+                    <span class=""><img src="Content/images/nav.png" /></span>
+                    <span class="am-navbar-label">点餐</span>
+                </a>
+            </li>
+            <li>
+                <a href="speak.html" class="">
+                    <span class=""><img src="Content/images/nav2.png" /></span>
+                    <span class="am-navbar-label">客说</span>
+                </a>
+            </li>
+            <li>
+                <a href="we.html" class="">
+                    <span class=""><img src="Content/images/nav3.png" /></span>
+                    <span class="am-navbar-label">我们</span>
+                </a>
+            </li>
+            <li>
+                <a href="member.html" class="">
+                    <span class=""><img src="Content/images/nav4.png" /></span>
+                    <span class="am-navbar-label">我的</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</body>
+</html>

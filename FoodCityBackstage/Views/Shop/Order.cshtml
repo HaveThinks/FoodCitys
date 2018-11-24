@@ -1,0 +1,133 @@
+﻿
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">查询条件</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+
+                            <input type="text" class="form-control" id="text1" placeholder="请输入用户名称" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn  btn-success" type="button" onclick="Search()">查    询</button>
+                @*<button class="btn  btn-default" type="button" onclick="Add()">添    加</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- START SIMPLE DATATABLE -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">用户订单</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable_simple" id="assets-data-table">
+                    <thead>
+                        <tr>
+                            <th>订单ID</th>
+                            <th>用户名</th>
+                            <th>订单号</th>
+                            <th>收货地址</th>
+                            <th>价格</th>
+                            <th>运费</th>
+                            @*<th>发票抬头</th>
+                                <th>发票类型</th>*@
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>是否被删除</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                        @foreach (var asset in ViewBag.data)
+                        {
+                            <tr>
+                                <th>@asset.OrderID</th>
+                                <th>@asset.UserName</th>
+                                <th>@asset.ExpressNumber</th>
+                                <th>@asset.AddressInfo</th>
+                                <th>￥@asset.OrderMoney</th>
+                                <th>￥@asset.PostMoney</th>
+                                <th>@asset.CreateTime</th>
+                                <th>@asset.OrderState</th>
+                                <th >@(asset.Isvaild?"否":"是")</th>
+                                <th>
+                                    <a class="btn btn-primary" onclick="See('@asset.OrderID')">查看</a>
+                                </th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- END SIMPLE DATATABLE -->
+    </div>
+</div>
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    订单详情
+                </h4>
+            </div>
+            <div class="modal-body" id="add">
+              
+            </div>
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+     function Search()//查询
+    {
+        var content = $("#text1").val();
+        window.location = '@Url.Action("Order", "Shop")' + '?Content=' + content +'&s=1';
+    }
+    function See(id) {
+         $("#myModals").on("show.bs.modal", function () {
+                $.ajax({
+                    url: "@Url.Action("OrderDetails")",
+                    type: "post",
+                    success: function (data) {
+
+                        //var html;
+                        //for (var i = 0; i < data.length; i++) {
+                        //    html += "";
+                        //}
+                        $("#add").html(data);
+                    }
+                })
+            });
+            $("#myModals").modal("show");
+    }
+</script>

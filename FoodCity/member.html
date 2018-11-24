@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>美食商城</title>
+    <meta name="description" content="美食商城" />
+    <meta name="keywords" content="美食商城" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="Content/css/amazeui.min.css" />
+    <link rel="stylesheet" href="Content/css/style.css" />
+    <script type="text/javascript" src="Content/js/jquery.min.js"></script>
+    <script type="text/javascript" src="Content/js/amazeui.min.js"></script>
+    <script src="Content/js/jquery-3.2.1.min.js"></script>
+    <script src="Content/js/tools.js"></script>
+    <script type="text/javascript">
+        $(function () {
+                $.ajax({
+                    url: weburl + "api/User/Data",
+                    method: "Get",
+                    dataType: "Json",
+                    success: function (data) {
+                        if (data != null) {
+                            $(".member").append("<div class=\"member-pic\">" +
+                                "<a href=\"\"><img src=\"Content/images/" + data.ImageUrl +"\" style=\"border-radius:50px\" /></a>" +
+
+                                           "</div>" +
+                                           "<div class=\"member-infor\">" + data.UserName + "</div>"+ 
+                                           "<div class=\"member-infor\" id=\"zhuxiao\" style=\"padding-right:20px; cursor:pointer;\">注销登陆</div>");
+
+                            $("#nav").append("<li><a href=\"address.html\"><i class=\"am-icon-map-marker\"></i><span>收货地址</span></a></li>" +
+                                                   "<li><a href=\"order.html\"><i class=\"am-icon-newspaper-o\"></i><span>我的订单</span></a></li>" +
+                                                   "<li><a href=\"shopcar.html\"><i class=\"am-icon-cart-arrow-down\"></i><span>购物车</span></a></li>" +
+                                                   "<li><a href=\"\"><i class=\"am-icon-bell-o\"></i><span>系统通知</span></a></li>" +
+                                                   "<li><a href=\"\"><i class=\"am-icon-credit-card\"></i><span>会员卡</span></a></li>" +
+                                                   "<li><a href=\"yhq.html\"><i class=\"am-icon-cc-mastercard\"></i><span>优惠券</span></a></li>" +
+                                                   "<li><a href=\"\"><i class=\"am-icon-dollar\"></i><span>积分</a></li>");
+                        }
+                        else {
+                            $("#nav").append("<li><a href=\"login.html\"><i class=\"am-icon-map-marker\"></i><span>收货地址</span></a></li>" +
+                                       "<li><a href=\"login.html\"><i class=\"am-icon-newspaper-o\"></i><span>我的订单</span></a></li>" +
+                                       "<li><a href=\"login.html\"><i class=\"am-icon-cart-arrow-down\"></i><span>购物车</span></a></li>" +
+                                       "<li><a href=\"\"><i class=\"am-icon-bell-o\"></i><span>系统通知</span></a></li>" +
+                                       "<li><a href=\"\"><i class=\"am-icon-credit-card\"></i><span>会员卡</span></a></li>" +
+                                       "<li><a href=\"login.html\"><i class=\"am-icon-cc-mastercard\"></i><span>优惠券</span></a></li>" +
+                                       "<li><a href=\"\"><i class=\"am-icon-dollar\"></i><span>积分</a></li>");
+                            $(".member").append("<div class=\"member-pic\">" +
+                                               "<a href=\"login.html\"><img src=\"Content/images/default_photo.png\" /></a>" +
+                                                "</div>" +
+                                                "<div class=\"member-infor\">点击登录</div>");
+                        }
+                        $("#zhuxiao").click(function () {
+                            $.ajax({
+                                url: weburl + "api/User/Logout",
+                                type: "get",
+                                success: function () {
+                                    window.location.reload();
+                                }
+                            })
+                        })
+                       
+
+                    }
+                })
+            
+        });
+      
+    </script>
+</head>
+<body>
+    <div class="member">
+       
+    </div>
+    <ul class="member-nav" id="nav">
+        
+    </ul>
+    <ul class="member-nav mt">
+        <li><a href=""><i class="am-icon-phone"></i>联系我们</a></li>
+    </ul>
+    <div class="h50"></div>
+    <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default footer " id="">
+        <ul class="am-navbar-nav am-cf am-avg-sm-4">
+            <li>
+                <a href="index.html" class="">
+                    <span class=""><img src="Content/images/nav.png" /></span>
+                    <span class="am-navbar-label">点餐</span>
+                </a>
+            </li>
+            <li>
+                <a href="speak.html" class="">
+                    <span class=""><img src="Content/images/nav2.png" /></span>
+                    <span class="am-navbar-label">客说</span>
+                </a>
+            </li>
+            <li>
+                <a href="we.html" class="">
+                    <span class=""><img src="Content/images/nav3.png" /></span>
+                    <span class="am-navbar-label">我们</span>
+                </a>
+            </li>
+            <li>
+                <a href="member.html" class="">
+                    <span class=""><img src="Content/images/nav4.png" /></span>
+                    <span class="am-navbar-label">我的</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+</body>
+</html>

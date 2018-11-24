@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>美食商城</title>
+    <meta name="description" content="particles.js is a lightweight JavaScript library for creating particles.">
+    <meta name="author" content="Vincent Garreau" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" media="screen" href="Content/css/style1.css">
+    <link rel="stylesheet" type="text/css" href="Content/css/reset.css" />
+    <script src="Content/js/jquery-3.2.1.min.js"></script>
+    <script src="Content/js/tools.js"></script>
+    <style>
+        .login-button {
+            width: 100px;
+            display: inline-block;
+            margin-left: 50px;
+        }
+        .msgs1 {
+           
+        }
+    </style>
+    <script type="text/javascript">
+       
+        $(function () {
+            //获取短信验证码
+            var validCode = true;
+            var codes = "000000";
+            $(".msgs").click(function () {
+                var time = 60;
+                var code = $(this);
+                if (validCode) {
+                    validCode = false;
+                    //this.click = null;
+                    //$(this).attr("disabled")
+                    //$(this).unbind('click');
+                    //code.addClass("msgs1");
+                    $(this).css("pointer-events", "none"); 
+                    var t = setInterval(function () {
+                        time--;
+                        code.html(time + "秒");
+                        if (time == 0) {
+                            clearInterval(t);
+                            code.html("重新获取");
+                            //location.reload();
+                            validCode = true;
+                            $(".msgs").css("pointer-events", "auto"); 
+                            //$(this).bind('click'); 
+                            //code.removeClass("msgs1");
+
+                        }
+                    }, 1000)
+                    $.ajax({
+                        url: weburl + "api/Code/Useryanzheng",
+                        type: "get",
+                        data: { tel: $("#name").val() },
+                        success: function (data) {
+                            if (data == "none") {
+                                alert("用户不存在，请先注册");
+                            }
+                            else {
+                                codes = data;
+                            }
+
+                        },
+                        error: function () {
+                            alert("获取验证码出错！")
+                        }
+                    })
+
+                }
+            })
+            $("#submit").click(function () {
+                if ($("#pwd").val() == codes) {
+
+                    alert("登录成功!");
+                    window.location.href = "member.html";
+                }
+                else {
+                    alert("验证码输入错误");
+                }
+            })
+        })
+
+    </script>
+</head>
+<body>
+    <div id="particles-js">
+        <div class="login">
+            <div class="login-top">
+                登录
+            </div>
+            <div class="login-center clearfix">
+                <div class="login-center-img"><img src="Content/images/name.png" /></div>
+                <div class="login-center-input">
+                    <input type="text" id="name" name="" value="" placeholder="请输入您的手机号" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的用户名'" />
+                    <div class="login-center-input-text">手机号</div>
+                </div>
+            </div>
+            <div class="login-center clearfix">
+                <div class="login-center-img"><img src="Content/images/password.png" /></div>
+                <div class="login-center-input">
+                    <input type="text" id="pwd" name="" value="" placeholder="验证码" onfocus="this.placeholder=''" onblur="this.placeholder='请输入您的验证码'" />
+                    <div class="login-center-input-text">验证码</div>
+                </div>
+            </div>
+            <!--<div><a href="register.html" style="margin-right:50px;">去注册</a></div>-->
+            <form>
+                <div class="login-button">
+                    <!--<a style="color:white;" id="huo">获取验证码</a>-->
+                    <span style="color:white;" class="msgs"> 获取验证码</span>
+                </div>
+                <div class="login-button" id="submit">
+                    登录
+                </div>
+            </form>
+          
+        </div>
+        <div class="sk-rotating-plane" id="register"></div>
+    </div>
+    <!-- scripts -->
+    <script src="Content/js/particles.min.js"></script>
+    <script src="Content/js/app.js"></script>
+</body>
+</html>

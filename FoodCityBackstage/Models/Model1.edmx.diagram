@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="63ba26f048e74824a7428d181a5aa47a" Name="Diagram1">
+        <EntityTypeShape EntityType="FoodDBModel.Admin" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.Bannder" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.Category" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.Evaluation" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.Menu" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.Message" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.PostType" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.RePly" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.ShipAddress" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.ShopCar" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDBModel.Order" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="FoodDBModel.Post" Width="1.5" PointX="10.375" PointY="10.75" />
+        <EntityTypeShape EntityType="FoodDBModel.PostEvaluation" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="FoodDBModel.BannderType" Width="1.5" PointX="7.375" PointY="10.75" />
+        <EntityTypeShape EntityType="FoodDBModel.OrderDetail" Width="1.5" PointX="11.375" PointY="5.75" />
+        <EntityTypeShape EntityType="FoodDBModel.User" Width="1.5" PointX="11.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

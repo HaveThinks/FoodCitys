@@ -1,0 +1,19 @@
+﻿@{
+
+    Layout = null;
+}
+@if (ViewBag.edit == 0)
+{
+    <div class="form-group">
+        <label for="AdminName"><span class="glyphicon glyphicon-user"></span>分类名称</label>
+        @Html.TextBox("name", null, new { placeholder = "输入名称", Class = "form-control" })
+    </div>
+}
+else
+{
+    foreach (FoodCityBackstage.Models.PostType item in ViewBag.cate)
+    {
+        <label for="AdminName"><span class="glyphicon glyphicon-user"></span>分类名称</label>
+        @Html.TextBox("name", item.PostTypeName, new { placeholder = "输入名称", Class = "form-control" })
+    }
+}

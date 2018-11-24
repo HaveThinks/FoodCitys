@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>美食商城</title>
+    <meta name="description" content="美食商城" />
+    <meta name="keywords" content="美食商城" />
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="Content/css/amazeui.min.css" />
+    <link rel="stylesheet" href="Content/css/style.css" />
+
+    <!--<script type="text/javascript" src="Content/js/jquery.min.js"></script>-->
+    <!--<script type="text/javascript" src="Content/js/amazeui.min.js"></script>-->
+    <script src="Content/js/jquery-3.2.1.min.js"></script>
+    <script src="Content/js/tools.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                url: weburl + "api/Menu/Search",
+                method: "Get",
+                dataType: "Json",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $("#search").append("<li>" +
+                      "<div class=\"am-gallery-item\">" +
+                      "<a href=\"detail.html?id=" + data[i].MenuID + "\" class=\"\">" +
+                      "<img src=\"Content/images/" + data[i].image + "\" alt=\"\" />" +
+                      "<h3 class=\"am-gallery-title\">" + data[i].MenuName + "</h3>" +
+                      "<div class=\"am-gallery-desc\">" +
+                      "<em>￥" + data[i].Price + "</em><i class=\"am-icon-cart-plus\"></i>" +
+                      "</div>" +
+                      "</a>" +
+                      "</div>" +
+                      "</li>");
+                    }
+                }
+            })
+
+            document.onkeydown = function (event) {
+                e = event ? event : (window.event ? window.event : null);
+                if (e.keyCode == 13) {
+                    $.ajax({
+                        url: weburl + "api/Menu/Searchs",
+                        method: "Get",
+                        data: { "MenuName": $("#searchs").val() },
+                        dataType: "Json",
+                        success: function (data) {
+                            $("#search").empty();
+                            for (var i = 0; i < data.length; i++) {
+                                $("#search").append("<li>" +
+                              "<div class=\"am-gallery-item\">" +
+                              "<a href=\"detail.html?id=" + data[i].MenuID + "\" class=\"\">" +
+                              "<img src=\"Content/images/" + data[i].image + "\" alt=\"\" />" +
+                              "<h3 class=\"am-gallery-title\">" + data[i].MenuName + "</h3>" +
+                              "<div class=\"am-gallery-desc\">" +
+                              "<em>￥" + data[i].Price + "</em><i class=\"am-icon-cart-plus\"></i>" +
+                              "</div>" +
+                              "</a>" +
+                              "</div>" +
+                              "</li>");
+                            }
+                        }
+                    })
+                }
+
+            };
+
+
+        });
+    </script>
+</head>
+<body>
+    <header data-am-widget="header" class="am-header am-header-default header">
+        <div class="am-header-left am-header-nav">
+            <a href="Index.html" class="">
+                <i class="am-header-icon am-icon-angle-left"></i>
+            </a>
+        </div>
+        <h1 class="am-header-title"> <a href="#title-link" class="" style="color: #333;">美食商城</a></h1>
+        <div class="am-header-right am-header-nav">
+            <a href="#right-link" class=""> </a>
+        </div>
+    </header>
+    <div class="search-input">
+        <input type="text" id="searchs" placeholder="请输入您搜索的内容" />
+    </div>
+    <ul class="paixu">
+        <li><a href="">默认</a></li>
+        <li><a href="">销量</a></li>
+        <li><a href="">价格</a></li>
+    </ul>
+    <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2 am-avg-md-3 am-avg-lg-4 am-gallery-default product" id="search">
+
+
+    </ul>
+</body>
+</html>

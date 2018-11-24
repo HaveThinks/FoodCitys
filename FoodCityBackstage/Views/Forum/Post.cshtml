@@ -1,0 +1,164 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">查询条件</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+
+                            <input type="text" class="form-control" id="text1" placeholder="帖子名称" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn  btn-success" type="button" onclick="Search()">查    询</button>
+                <button class="btn  btn-default" type="button" onclick="Add()">添    加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <!-- START SIMPLE DATATABLE -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">菜单管理</h3>
+                <ul class="panel-controls">
+                    <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span></a></li>
+                    <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <table class="table datatable_simple" id="assets-data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>分类名称</th>
+                            <th>标题</th>
+                            <th>发布时间</th>
+                            <th>浏览量</th>                         
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                        @foreach (var asset in ViewBag.data)
+                        {
+                            <tr>
+                                <td>@asset.PostID</td>
+                                <td>@asset.UserName</td>
+                                <td>@asset.PostTypeName</td>
+                                <td>@asset.PostTitle</td>
+                                <td>@asset.ReleaseTime</td>
+                                <td>@asset.BrowseVolume</td>                                
+                                <td>
+                                    <a class="btn btn-primary" onclick="Details('@asset.PostID')">详情</a>
+                                    <a class="btn btn-primary" onclick="Delete('@asset.PostID')">删除</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- END SIMPLE DATATABLE -->
+    </div>
+</div>
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabeclass" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabeclass">
+                   详情
+                </h4>
+            </div>
+            <div class="modal-body" id="add">
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="submit">
+                    修改
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script src="~/Content/Backstage/jquery-3.3.1.min.js"></script>
+<script>
+   function Search()//查询
+    {
+        var content = $("#text1").val();
+        window.location = '@Url.Action("Post", "Forum")' + '?Content=' + content +'&s=1';
+    }
+    $(function () {
+        $('#myModals').on("hidden.bs.modal", function () {
+            //关闭模态框后清除模态框数据并刷新页面
+            $(this).removeData('bs.modal');
+            location.reload();
+
+        });
+        $("#submit").click(function () {
+            var id = $("#titid1").text();
+            var ptid = $("#posttype").val();
+            var title = $("#title1").val();
+            var Content = $("#content").val();
+            $.ajax({
+            url: "@Url.Action("EdPost")",
+                type: "post",
+                data: { PostID: id, PostTitle: title, Content: Content, PostTypeID: ptid},
+            success: function (data) {
+                alert(data);
+                location.reload();
+            }
+        })
+        })
+        
+    })
+    //定义变量判断添加还是修改  
+    function Delete(id) {
+        $.ajax({
+            url: "@Url.Action("Deletepost")",
+            data: { ID: id },
+            type:"post",
+            success: function (data) {
+                alert(data);
+                window.location.reload();
+            }
+        })
+    }
+    //详情
+    function Details(uid) {
+        ae = uid;
+         $("#myModals").on("show.bs.modal", function () {
+                $.ajax({
+                    url: "@Url.Action("Details")",
+                    type: "post",
+                    data: { id: uid },
+                    success: function (data) {
+
+                        $("#add").html(data);
+                    }
+                })
+            });
+            $("#myModals").modal("show");
+    }
+   
+</script>

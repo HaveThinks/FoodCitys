@@ -1,0 +1,107 @@
+﻿@{
+
+    Layout = null;
+}
+<script src="~/Content/utf8-asp/ueditor.config.js"></script>
+<script src="~/Content/utf8-asp/ueditor.all.min.js"></script>
+<script type="text/javascript">
+    var ue = UE.getEditor('container');
+</script>
+@if (ViewBag.edit == 0)
+{
+    <form id="ff">
+        <div class="form-group">
+            <label for="AdminName"><span class="glyphicon glyphicon-user"></span>菜品名称</label>
+            @Html.TextBox("name", null, new { placeholder = "输入名称", Class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="OrderState">菜品分类</label>
+            <select class="form-control" id="power" name="OrderState" data-rel="chosen" data-placeholder="选择分类">
+                @foreach (FoodCityBackstage.Models.Category item in ViewBag.cate)
+                {
+                    <option value="@item.CategoryID">@item.CategoryName</option>
+                }
+            </select>
+        </div>
+        <div class="form-group" id="uploadForm" enctype='multipart/form-data'>
+            <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                <div class="fileinput-new thumbnail" style="width: 200px;height: auto;max-height:150px;">
+                    <img id='picImg' style="width: 100%;height: auto;max-height: 140px;" src="~/Content/Backstage/assets/images/Bander/noimage.png" alt="" />
+                </div>
+                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                <div>
+                    <span class="btn btn-primary btn-file">
+                        选择
+                        <input type="file" name="FileUpload1" id="FileUpload1" accept="image/gif,image/jpeg,image/x-png">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="from-group">
+            <label class="control-label" for="Price">价格</label>&nbsp;
+            <span class="add-on">$<input type="number" name="Price" id="Price" value="100" min="0" max="10000" /></span>&nbsp;
+            <label class="control-label" for="Shipping">运费</label>&nbsp;
+            <span class="add-on">$<input type="number" name="Shipping" id="Shipping" value="100" min="0" max="10000" /></span>&nbsp;
+            <label class="control-label" for="Quantity">库存</label>&nbsp;
+            <input type="number" name="Quantity" id="Quantity" value="500" min="0" max="10000" />&nbsp;
+        </div>
+        <div class="from-group">
+            <textarea style="width:100%;height:100px;" id="tex1" contextmenu=""></textarea>
+        </div>
+    </form>
+}
+else
+{
+    foreach (FoodCityBackstage.Models.Menu item in ViewBag.menu)
+    {
+    <form id="ff">
+        <div class="form-group">
+            <label for="AdminName"><span class="glyphicon glyphicon-user"></span>菜品名称</label>
+            @Html.TextBox("name", item.MenuName, new { placeholder = "输入名称", Class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="OrderState">菜品分类</label>
+            <select class="form-control" id="power" name="OrderState" data-rel="chosen" data-placeholder="选择分类">
+
+                @foreach (FoodCityBackstage.Models.Category aa in ViewBag.cate)
+                {
+                    if (aa.CategoryID == item.CategoryId)
+                    {
+                        <option value="@aa.CategoryID" selected="selected">@aa.CategoryName</option>
+                    }
+                    <option value="@aa.CategoryID">@aa.CategoryName</option>
+                }
+            </select>
+        </div>
+        <div class="form-group" id="uploadForm" enctype='multipart/form-data'>
+            <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                <div class="fileinput-new thumbnail" style="width: 200px;height: auto;max-height:150px;">
+                    <img id='picImg' style="width: 100%;height: auto;max-height: 140px;" src="~/Content/Backstage/assets/images/Menu/@item.image" alt="" />
+                </div>
+                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                <div>
+                    <span class="btn btn-primary btn-file">
+                        选择
+                        <input type="file" name="FileUpload1" id="FileUpload1" accept="image/gif,image/jpeg,image/x-png">
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="from-group">
+            <label class="control-label" for="Price">价格</label>&nbsp;
+            <span class="add-on">$<input type="number" name="Price" id="Price" value="@item.Price" min="0" max="10000" /></span>&nbsp;
+            <label class="control-label" for="Shipping">运费</label>&nbsp;
+            <span class="add-on">$<input type="number" name="Shipping" id="Shipping" value="@item.Shipping" min="0" max="10000" /></span>&nbsp;
+            <label class="control-label" for="Quantity">库存</label>&nbsp;
+            <input type="number" name="Quantity" id="Quantity" value="@item.Store" min="0" max="10000" />&nbsp;
+        </div>
+        <div class="from-group">
+            <label for="tex1"><span class="glyphicon glyphicon-text-width"></span>详情</label>
+            <textarea style="width:100%;height:100px;" id="tex1" contextmenu="">@item.Details</textarea>
+        </div>
+    </form>
+           
+
+    }
+}
+

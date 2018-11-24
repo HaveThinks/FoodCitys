@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="description" content="Free Web tutorials">
+    <meta name="keywords" content="HTML,CSS,JavaScript">
+    <meta content="telephone=no" name="format-detection">
+    <title>美食商城</title>
+    <link href="Content/css/Cbase.css" type="text/css" rel="stylesheet">
+    <link href="Content/css/index.css" type="text/css" rel="stylesheet">
+    <link href="Content/css/swiper.min.css" type="text/css" rel="stylesheet">
+    <!--<script src="Content/js/base.js" type="text/javascript"></script>-->
+    <script src="Content/js/swiper.min.js" type="text/javascript"></script>
+    <!--<script src="Content/js/index.js" type="text/javascript"></script>-->
+    <script src="Content/js/jquery-1.7.2.min.js"></script>
+    <script src="Content/js/tools.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var price = 0;
+            var jiesuan = 0;
+            $.ajax({
+                url: weburl + "api/ShopCar/ShopList",
+                type: "get",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $(".shopcar ul").append("<li carid=\""+data[i].ShopCarID+"\">" +
+                                                "<p><label><input type=\"checkbox\" id=\"" + data[i].ShopCarID + "\" price=" + data[i].Quantity * data[i].Price + "></label><a href=\"detail.html?id="+data[i].MenuID+"\"><img src=\"Content/images/" + data[i].image + "\"></a></p>" +
+                                                "<div class=\"shop_car\">" +
+                                                "<a href=\"product_xq.html\">" + data[i].MenuName + "</a>" +
+                                                "<span>规格：500g/袋</span>" +
+                                                "<div class=\"shu\"><span class=\"jian\" carid=\"" + data[i].ShopCarID + "\"><img src=\"Content/images/icon_016.png\"></span><input class=\"shopcart-td-num\" type=\"text\" value=\"" + data[i].Quantity + "\" /><span class=\"jia\" carid=\"" + data[i].ShopCarID + "\" store=\"" + data[i].Store + "\" price=\"" + data[i].Price + "\"><img src=\"Content/images/icon_017.png\"></span><a><i>￥</i><b>" + data[i].Quantity * data[i].Price + "</b></a></div>" +
+                                                "</div>" +
+                                                "<img class=\"delete\" carid=\"" + data[i].ShopCarID + "\" src=\"Content/images/icon_030.png\">" +
+                                                "</li>");                                        
+                    }
+                               
+                    $("label input").click(function () {
+
+
+                        if ($("label input[type=checkbox]:checked").length < $("ul label input[type=checkbox]").length) {
+                            $(".pay label span").removeClass("on")
+                          
+                        }
+                        if ($("label input[type=checkbox]:checked").length == $("ul label input[type=checkbox]").length) {
+                            $(".pay label span").addClass("on")
+                            
+                        }
+
+
+                        $(this).parent().toggleClass("on");
+                        var flag = 1;
+                        $("label input").each(function () {
+                            if (!this.checked) {
+                                flag = 0;
+                            }
+                        })
+                        if (flag == 1) {
+                            $(".car_pay span").addClass("on")
+                        }
+                        else {
+                            $(".car_pay span").removeClass("on")
+                        }
+                        if ($("label input[type=checkbox]:checked").length==0) {
+                            $(".pay_right b").html("￥0");
+                            $(".pay_right a").html("结算(0)");
+                        }
+                        price = 0;
+                        $("label input[type=checkbox]").each(function () {                           
+                            if ($(this).attr("checked") == "checked" == true) {
+                                
+                                price += parseInt($(this).attr("price"));
+                                if (isNaN(price)) {
+                                    $(".pay_right b").html("￥0")
+                                    $(".pay_right a").html("结算(0)");
+                                    window.location.reload();
+                                    //price = 0;
+                                }
+                                else {
+                                    jiesuan = $("ul label input[type=checkbox]:checked").length
+                                    $(".pay_right b").html("￥" + parseInt(price) + "");
+                                    $(".pay_right a").html("结算(" + jiesuan + ")");
+                                }
+                                
+                            }                                                                                  
+                        })                                        
+                    });
+                    $(".jia").click(function () {
+                        var n = $(this).siblings("input").val();
+                        n++;
+                        if (n > $(this).attr("store")) {
+                            alert("库存不足啦!");
+                            //$(this).siblings("input").val($(this).attr("store") - 1);
+                            return false;
+                        }
+                        $(this).siblings("input").val(n);
+                        $.ajax({
+                            url: weburl + "api/ShopCar/AddQuantity",
+                            type: "get",
+                            data: { quantity: n, shopcarid: $(this).attr("carid") },
+                            success: function (data) {
+                                window.location.reload();
+                            }
+                        })
+                        return false;
+                       
+                    });
+                    $(".jian").click(function () {
+                        var n = $(this).siblings("input").val();
+                        n--;
+                        if (n < 1) {
+                            $(this).siblings("input").val(n + 1);
+                            return false;
+                        }
+                        $(this).siblings("input").val(n)
+                        $.ajax({
+                            url: weburl + "api/ShopCar/AddQuantity",
+                            type: "get",
+                            data: { quantity: n, shopcarid: $(this).attr("carid") },
+                            success: function (data) {
+                                window.location.reload();
+                            }
+                        })
+                        return false
+                    });               
+                    $(".pay label span").click(function () {
+                        if ($(this).hasClass("on")) {                           
+                            $(this).removeClass("on")
+                            $("label input").prop("checked", false);
+                            $("label").removeClass("on")
+                            
+                        }
+                        else {
+                            $(this).addClass("on")
+                            $("label input").prop("checked", true);
+                            $("label").addClass("on")
+
+                        }
+                    })
+                    $(".delete").click(function () {
+                        $.ajax({
+                            url:weburl+"api/ShopCar/DeletePro",
+                            type:"get",
+                            data: { shopcarid: $(this).attr("carid") },
+                            success: function (data) {
+                                window.location.reload();
+                            }
+                        })
+                    })
+                    $(".pay_right a").click(function () {
+                        var carid = "";
+                        if ($("ul label input[type=checkbox]:checked").length==0) {
+                            alert("请选择您要结算的商品")
+                        }
+                        else {
+                            $("ul label input[type=checkbox]:checked").each(function () {
+                                carid+=$(this).attr("id")+","
+                            })
+                            window.location.href = "pay.html?id="+carid;
+                        }
+                    })
+                }
+            });          
+        })
+    </script>
+</head>
+
+<body>
+    <!--ftop开始-->
+    <div class="ftop">
+        <a class="back" onclick="javascript:history.back(-1);"><img src="Content/images/icon_03.png"></a>
+        <h3 style=" margin-left:150px; font-size:18px;">购物车</h3>
+        <a style="position:absolute; top:4px; font-size:14px; right:15px; color:#333" class="all">编辑</a>
+        <div style="clear: both;"></div>
+    </div>
+    <!--ftop开始-->
+    <div class="shopcar" style="margin-top:50px;">
+        <ul></ul>
+        <div class="pay" style="bottom:0px;">
+            <label><input type="checkbox"><span>全选</span></label>
+            <div class="pay_right">
+                <p><span>合计：<b>￥0</b></span><i>不含运费</i></p>
+                <a>结算(0)</a>
+            </div>
+        </div>
+        <!--弹窗-->
+        <div class="block_bg"></div>
+        <div class="delete_box">
+            <h2>确定要删除此商品吗？</h2>
+            <p><a class="cancel">取消</a><a class="sure">确定</a></p>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            
+
+            $(".ftop .all").click(function () {
+                var val = $(this).html();
+                if (val == "编辑") {
+                    $(this).html("完成")
+                } else {
+                    $(this).html("编辑")
+                }
+            })
+
+            $(".ftop .all").click(function () {
+                $(".shopcar ul li .delete").toggle();
+            })
+            //$(".shopcar ul li .delete").click(function () {
+            //    $(".block_bg,.delete_box").fadeIn();
+            //})
+            //$(".block_bg,.delete_box p a").click(function () {
+            //    $(".block_bg,.delete_box").fadeOut();
+            //})
+        });
+    </script>
+
+</body>
+</html>

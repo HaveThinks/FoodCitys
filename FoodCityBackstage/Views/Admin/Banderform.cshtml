@@ -1,0 +1,99 @@
+﻿@{
+    Layout = null;
+}
+@if (ViewBag.edit == 0)
+{
+    <form id="ff">
+        <div class="form-group">
+            <label for="AdminName"><span class=""></span>Bander名称</label>
+            @Html.TextBox("name", null, new { placeholder = "输入名称", Class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="OrderState">是否显示</label>
+            <select class="form-control" id="Isde" name="OrderState" data-rel="chosen">
+                <option selected="selected">是</option>
+                <option>否</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="OrderState">选择类型</label>
+            <select class="form-control" id="power" name="OrderState" data-rel="chosen" data-placeholder="选择分类">
+                @foreach (FoodCityBackstage.Models.BannderType item in ViewBag.banderType)
+                {
+                    <option value="@item.BannderTypeid">@item.BannderTypename</option>
+                }
+            </select>
+        </div>
+        <div class="form-group" id="uploadForm" enctype='multipart/form-data'>
+            <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                <div class="fileinput-new thumbnail" style="width: 200px;height: auto;max-height:150px;">
+                    <img id='picImg' style="width: 100%;height: auto;max-height: 140px;" src="~/Content/Backstage/assets/images/Bander/noimage.png" alt="" />
+                </div>
+                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                <div>
+                    <span class="btn btn-primary btn-file">
+                        选择
+                        <input type="file" name="FileUpload1" id="FileUpload1" accept="image/gif,image/jpeg,image/x-png">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+        
+ }
+        else
+        {
+        foreach (FoodCityBackstage.Models.Bannder item in ViewBag.bander)
+        {
+    <form id="ff">
+        <div class="form-group">
+            <label for="name"><span class=""></span>Bander名称</label>
+            @Html.TextBox("name", item.BannderName, new { placeholder = "输入名称", Class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="OrderState">是否显示</label>
+            <select class="form-control" id="Isde" name="OrderState" data-rel="chosen">
+                @if (item.Isdefault == true)
+                {
+                    <option selected="selected">是</option>
+                    <option>否</option>
+                }
+                else
+                {
+                    <option selected="selected">否</option>
+                    <option>是</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="OrderState">选择类型</label>
+            <select class="form-control" id="power" name="OrderState" data-rel="chosen" data-placeholder="选择分类">
+                @foreach (FoodCityBackstage.Models.BannderType item1 in ViewBag.banderType)
+                {
+                    if (item.BannerType == item1.BannderTypeid)
+                    {
+                        <option value="@item1.BannderTypeid" selected="selected">@item1.BannderTypename</option>
+                    }
+                    
+                    <option value="@item1.BannderTypeid">@item1.BannderTypename</option>
+                }
+            </select>
+        </div>
+        <div class="form-group" id="uploadForm" enctype='multipart/form-data'>
+            <div class="fileinput fileinput-new" data-provides="fileinput" id="exampleInputUpload">
+                <div class="fileinput-new thumbnail" style="width: 200px;height: auto;max-height:150px;">
+                    <img id='picImg' style="width: 100%;height: auto;max-height: 140px;" src="~/Content/Backstage/assets/images/Bander/@item.Image" alt="" />
+                </div>
+                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                <div>
+                    <span class="btn btn-primary btn-file">
+                        选择
+                        <input type="file" name="FileUpload1" id="FileUpload1" accept="image/gif,image/jpeg,image/x-png">
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+        }
+        }
+
